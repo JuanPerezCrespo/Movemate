@@ -1,2 +1,4 @@
 # Movemate
 Movemate ISST
+Movemate es una aplicación para personas con una vida acelerada y poco tiempo que quieran practicar actividades deportivas, pero no sean capaces de planificarlas, Movemate es una plataforma web que ofrece actividades físicas cercanas al usuario, adaptadas a su experiencia y preferencias personales. También ofrece una interfaz para que monitores, gimnasios u organizaciones deportivas publiquen sus ofertas de actividades. Al contrario de otros servicios y ofertas de actividades deportivas, Movemate ofrece actividades para varios deportes, adaptándose al tiempo y recursos de los que dispone el usuario. Los monitores podrán acceder en tiempo real a toda la información y estado de las reservas de su actividad.
+En este repositorio se desarrollará el software necesario para implementar un MVP para dicho producto. Para ello se seguirá una metodología agile basada en Scrum.
