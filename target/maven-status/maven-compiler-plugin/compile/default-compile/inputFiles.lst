@@ -11,6 +11,8 @@
 /Users/arru/Movemate/src/main/java/com/movemate/controller/HomeController.java
 /Users/arru/Movemate/src/main/java/com/movemate/controller/ActividadController.java
 /Users/arru/Movemate/src/main/java/com/movemate/config/SecurityConfig.java
+/Users/arru/Movemate/src/main/java/com/movemate/controller/UsuarioController.java
+/Users/arru/Movemate/src/main/java/com/movemate/controller/RegistroController.java
 /Users/arru/Movemate/src/main/java/com/movemate/security/CustomUserDetails.java
 /Users/arru/Movemate/src/main/java/com/movemate/model/Monitor.java
 /Users/arru/Movemate/src/main/java/com/movemate/security/CustomUserDetailsService.java

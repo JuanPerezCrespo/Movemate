@@ -61,7 +61,8 @@
 
     <div sec:authorize="isAnonymous()">
         <p>No has iniciado sesión.</p>
-        <a th:href="@{/login}">🔐 Iniciar sesión</a>
+        <a th:href="@{/login}">🔐 Iniciar sesión</a><br/>
+        <a th:href="@{/registro}">📝 Registrarse</a>
     </div>
 </div>
 

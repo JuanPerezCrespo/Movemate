@@ -23,14 +23,17 @@ public class Actividad {
     private int participantes;
     private String descripcion;
 
+    private String estado = "Disponible"; // NUEVO CAMPO
+
     @ManyToOne
     @JoinColumn(name = "monitor_id")
     private Monitor monitor;
 
-    @OneToMany(mappedBy = "actividad")
+    @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL)
     private List<Reserva> reservas;
 
     // Getters y Setters
+
     public Long getId() {
         return id;
     }
@@ -101,5 +104,13 @@ public class Actividad {
 
     public void setReservas(List<Reserva> reservas) {
         this.reservas = reservas;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 }

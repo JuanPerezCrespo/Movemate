@@ -16,4 +16,13 @@ public class Monitor extends Usuario {
     public void setActividades(List<Actividad> actividades) {
         this.actividades = actividades;
     }
+    private String deporte;
+
+    public String getDeporte() {
+        return deporte;
+    }
+
+    public void setDeporte(String deporte) {
+        this.deporte = deporte;
+    }
 }

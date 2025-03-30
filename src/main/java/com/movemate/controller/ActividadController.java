@@ -1,22 +1,14 @@
 package com.movemate.controller;
 
-import java.util.List;
-import com.movemate.model.Actividad;
-import com.movemate.model.Usuario;
-import com.movemate.model.Reserva;
-import com.movemate.repository.ActividadRepository;
-import com.movemate.repository.UsuarioRepository;
-
-import com.movemate.model.Cliente;
-import com.movemate.model.Monitor;
-
-import com.movemate.repository.ReservaRepository;
-
+import com.movemate.model.*;
+import com.movemate.repository.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -40,30 +32,30 @@ public class ActividadController {
         model.addAttribute("actividades", actividades);
         return "actividades";
     }
-    // Mostrar formulario para crear una nueva actividad
+
     @GetMapping("/actividades/nueva")
     public String mostrarFormulario(Model model) {
         model.addAttribute("actividad", new Actividad());
         return "crear-actividad";
     }
 
-    // Guardar actividad desde el formulario
     @PostMapping("/actividades/guardar")
     public String guardarActividad(@ModelAttribute Actividad actividad, Authentication auth) {
         String username = auth.getName();
         Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(username);
-    
+
         if (usuarioOpt.isPresent() && usuarioOpt.get() instanceof Monitor monitor) {
             actividad.setMonitor(monitor);
         }
-    
+
         actividadRepository.save(actividad);
         return "redirect:/actividades";
     }
+
     @GetMapping("/actividades/{id}")
     public String verActividad(@PathVariable Long id, Model model) {
         Optional<Actividad> actividadOpt = actividadRepository.findById(id);
-    
+
         if (actividadOpt.isPresent()) {
             model.addAttribute("actividad", actividadOpt.get());
             return "detalle-actividad";
@@ -71,27 +63,91 @@ public class ActividadController {
             return "redirect:/actividades";
         }
     }
-@PostMapping("/actividades/reservar")
-public String reservarActividad(@RequestParam Long actividadId, Authentication auth) {
-    Optional<Actividad> actividadOpt = actividadRepository.findById(actividadId);
 
-    if (actividadOpt.isPresent()) {
-        Actividad actividad = actividadOpt.get();
-        Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(auth.getName());
+    @PostMapping("/actividades/reservar")
+    public String reservar(@RequestParam Long actividadId, Authentication auth, RedirectAttributes redirectAttributes) {
+        String username = auth.getName();
+        Usuario usuario = usuarioRepository.findByUsername(username).orElse(null);
+        Actividad actividad = actividadRepository.findById(actividadId).orElse(null);
 
-        if (usuarioOpt.isPresent() && usuarioOpt.get() instanceof Cliente cliente) {
-            Reserva reserva = new Reserva();
-            reserva.setActividad(actividad);
-            reserva.setUsuario(cliente);  // Ahora sí es tipo Cliente
+        if (usuario instanceof Cliente cliente && actividad != null) {
+            boolean yaReservado = reservaRepository.existsByUsuarioAndActividad(cliente, actividad);
+            if (!yaReservado) {
+                Reserva reserva = new Reserva();
+                reserva.setUsuario(cliente);
+                reserva.setActividad(actividad);
+                reservaRepository.save(reserva);
 
-            reservaRepository.save(reserva);
+                actividad.setParticipantes(actividad.getParticipantes() + 1);
+                actividadRepository.save(actividad);
+
+                redirectAttributes.addFlashAttribute("mensaje", "✅ Te has apuntado correctamente.");
+            } else {
+                redirectAttributes.addFlashAttribute("mensaje", "⚠️ Ya estabas apuntado a esta actividad.");
+            }
         } else {
-            // ⚠️ No es cliente o no existe: puedes redirigir o lanzar error
-            return "redirect:/actividades?error=not-client";
+            redirectAttributes.addFlashAttribute("mensaje", "❌ Error al apuntarse.");
         }
+
+        return "redirect:/actividades/" + actividadId;
     }
 
-    return "redirect:/actividades/" + actividadId;
-}
+    @PostMapping("/actividades/desapuntarse")
+    public String desapuntarse(@RequestParam Long actividadId, Authentication auth, RedirectAttributes redirectAttributes) {
+        String username = auth.getName();
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(username);
+        Optional<Actividad> actividadOpt = actividadRepository.findById(actividadId);
 
+        if (usuarioOpt.isPresent() && usuarioOpt.get() instanceof Cliente cliente && actividadOpt.isPresent()) {
+            Actividad actividad = actividadOpt.get();
+            List<Reserva> reservas = reservaRepository.findByUsuarioAndActividad(cliente, actividad);
+
+            if (!reservas.isEmpty()) {
+                reservas.forEach(reservaRepository::delete);
+
+                int nuevosParticipantes = actividad.getParticipantes() - reservas.size();
+                actividad.setParticipantes(Math.max(nuevosParticipantes, 0));
+                actividadRepository.save(actividad);
+
+                redirectAttributes.addFlashAttribute("mensaje", "✅ Te has desapuntado correctamente.");
+            } else {
+                redirectAttributes.addFlashAttribute("mensaje", "⚠️ No estabas apuntado a esta actividad.");
+            }
+        } else {
+            redirectAttributes.addFlashAttribute("mensaje", "❌ Error al desapuntarse.");
+        }
+
+        return "redirect:/actividades/" + actividadId;
+    }
+
+    @PostMapping("/actividades/{id}/cancelar")
+    public String cancelarActividad(@PathVariable Long id, Authentication auth) {
+        Optional<Actividad> optActividad = actividadRepository.findById(id);
+        if (optActividad.isPresent()) {
+            Actividad actividad = optActividad.get();
+            if (actividad.getMonitor().getUsername().equals(auth.getName())) {
+                actividad.setEstado("Cancelada");
+                actividadRepository.save(actividad);
+            }
+        }
+        return "redirect:/actividades";
+    }
+
+    @GetMapping("/mis-actividades")
+    public String verMisActividades(Authentication auth, Model model) {
+        String username = auth.getName();
+        Usuario usuario = usuarioRepository.findByUsername(username).orElse(null);
+
+        if (usuario instanceof Cliente cliente) {
+            List<Reserva> reservas = reservaRepository.findByUsuario(cliente);
+            model.addAttribute("reservas", reservas);
+            model.addAttribute("tipo", "cliente");
+        } else if (usuario instanceof Monitor monitor) {
+            List<Actividad> actividades = actividadRepository.findByMonitor(monitor);
+            model.addAttribute("actividades", actividades);
+            model.addAttribute("tipo", "monitor");
+        }
+
+        return "mis-actividades";
+    }
 }

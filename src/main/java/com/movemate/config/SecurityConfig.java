@@ -21,8 +21,10 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/login", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/registro", "/css/**", "/js/**").permitAll()
                 .requestMatchers("/", "/actividades", "/actividades/{id}").authenticated()
                 .requestMatchers("/actividades/nueva", "/actividades/guardar").hasRole("MONITOR")
+                
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
@@ -34,6 +36,7 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/login?logout")
                 .permitAll()
             );
+
 
         return http.build();
     }
