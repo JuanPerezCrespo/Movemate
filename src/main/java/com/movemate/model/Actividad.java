@@ -1,6 +1,8 @@
 package com.movemate.model;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,8 +15,11 @@ public class Actividad {
 
     private String deporte;
     private String ubicacion;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime fecha;
-    private Double precio;
+
+    private double precio;
     private int participantes;
     private String descripcion;
 
@@ -22,11 +27,10 @@ public class Actividad {
     @JoinColumn(name = "monitor_id")
     private Monitor monitor;
 
-    @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "actividad")
     private List<Reserva> reservas;
 
     // Getters y Setters
-
     public Long getId() {
         return id;
     }
@@ -59,11 +63,11 @@ public class Actividad {
         this.fecha = fecha;
     }
 
-    public Double getPrecio() {
+    public double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(Double precio) {
+    public void setPrecio(double precio) {
         this.precio = precio;
     }
 

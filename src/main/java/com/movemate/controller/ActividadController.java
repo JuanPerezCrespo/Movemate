@@ -6,6 +6,10 @@ import com.movemate.model.Usuario;
 import com.movemate.model.Reserva;
 import com.movemate.repository.ActividadRepository;
 import com.movemate.repository.UsuarioRepository;
+
+import com.movemate.model.Cliente;
+import com.movemate.model.Monitor;
+
 import com.movemate.repository.ReservaRepository;
 
 import org.springframework.security.core.Authentication;
@@ -45,35 +49,46 @@ public class ActividadController {
 
     // Guardar actividad desde el formulario
     @PostMapping("/actividades/guardar")
-    public String guardarActividad(@ModelAttribute Actividad actividad) {
+    public String guardarActividad(@ModelAttribute Actividad actividad, Authentication auth) {
+        String username = auth.getName();
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(username);
+    
+        if (usuarioOpt.isPresent() && usuarioOpt.get() instanceof Monitor monitor) {
+            actividad.setMonitor(monitor);
+        }
+    
         actividadRepository.save(actividad);
         return "redirect:/actividades";
     }
     @GetMapping("/actividades/{id}")
-public String verActividad(@PathVariable Long id, Model model) {
-    Optional<Actividad> actividadOpt = actividadRepository.findById(id);
-
-    if (actividadOpt.isPresent()) {
-        model.addAttribute("actividad", actividadOpt.get());
-        return "detalle-actividad";
-    } else {
-        return "redirect:/actividades";
+    public String verActividad(@PathVariable Long id, Model model) {
+        Optional<Actividad> actividadOpt = actividadRepository.findById(id);
+    
+        if (actividadOpt.isPresent()) {
+            model.addAttribute("actividad", actividadOpt.get());
+            return "detalle-actividad";
+        } else {
+            return "redirect:/actividades";
+        }
     }
-}
 @PostMapping("/actividades/reservar")
 public String reservarActividad(@RequestParam Long actividadId, Authentication auth) {
     Optional<Actividad> actividadOpt = actividadRepository.findById(actividadId);
 
     if (actividadOpt.isPresent()) {
         Actividad actividad = actividadOpt.get();
-        Usuario usuario = usuarioRepository.findByUsername(auth.getName()).get();
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(auth.getName());
 
+        if (usuarioOpt.isPresent() && usuarioOpt.get() instanceof Cliente cliente) {
+            Reserva reserva = new Reserva();
+            reserva.setActividad(actividad);
+            reserva.setUsuario(cliente);  // Ahora sí es tipo Cliente
 
-        Reserva reserva = new Reserva();
-        reserva.setActividad(actividad);
-        reserva.setUsuario(usuario);
-
-        reservaRepository.save(reserva);
+            reservaRepository.save(reserva);
+        } else {
+            // ⚠️ No es cliente o no existe: puedes redirigir o lanzar error
+            return "redirect:/actividades?error=not-client";
+        }
     }
 
     return "redirect:/actividades/" + actividadId;

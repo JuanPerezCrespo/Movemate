@@ -1,10 +1,19 @@
 package com.movemate.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
-public class Monitor {
-    @Id
-    private Long id;
+public class Monitor extends Usuario {
+
+    @OneToMany(mappedBy = "monitor")
+    private List<Actividad> actividades;
+
+    public List<Actividad> getActividades() {
+        return actividades;
+    }
+
+    public void setActividades(List<Actividad> actividades) {
+        this.actividades = actividades;
+    }
 }

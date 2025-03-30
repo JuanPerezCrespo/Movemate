@@ -7,6 +7,9 @@
 <body>
     <div th:replace="fragments/sidebar :: sidebar"></div>
     <h1>Crear nueva actividad</h1>
+    <label>Monitor asignado:</label>
+    <input type="text" th:value="${#authentication.name}" readonly /><br/>
+
 
     <form th:action="@{/actividades/guardar}" th:object="${actividad}" method="post">
         <label>Deporte:</label>

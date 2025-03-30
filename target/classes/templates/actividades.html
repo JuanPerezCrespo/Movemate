@@ -1,38 +1,82 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Actividades disponibles</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .content {
+            margin-left: 240px; /* espacio para el sidebar */
+            padding: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f5f6fa;
+        }
+
+        a {
+            text-decoration: none;
+            color: #2980b9;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
 
-<!-- Menú lateral -->
-<div th:replace="fragments/sidebar :: sidebar"></div>
+<!-- Sidebar reutilizable -->
+<div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
 
 <!-- Contenido principal -->
 <div class="content">
     <h1>Actividades disponibles</h1>
 
-    <table border="1">
+    <table>
         <thead>
-            <tr>
-                <th>Deporte</th>
-                <th>Ubicación</th>
-                <th>Fecha</th>
-                <th>Precio</th>
-                <th>Participantes</th>
-                <th>Descripción</th>
-            </tr>
+        <tr>
+            <th>Deporte</th>
+            <th>Ubicación</th>
+            <th>Fecha</th>
+            <th>Precio</th>
+            <th>Participantes</th>
+            <th>Monitor</th>
+            <th>Descripción</th>
+            <th>Acciones</th>
+        </tr>
         </thead>
         <tbody>
-            <tr th:each="actividad : ${actividades}">
-                <td th:text="${actividad.deporte}"></td>
-                <td th:text="${actividad.ubicacion}"></td>
-                <td th:text="${actividad.fecha}"></td>
-                <td th:text="${actividad.precio}"></td>
-                <td th:text="${actividad.participantes}"></td>
-                <td th:text="${actividad.descripcion}"></td>
-            </tr>
+        <tr th:each="actividad : ${actividades}">
+            <td th:text="${actividad.deporte}">Deporte</td>
+            <td th:text="${actividad.ubicacion}">Ubicación</td>
+            <td th:text="${actividad.fecha}">Fecha</td>
+            <td th:text="${actividad.precio}">Precio</td>
+            <td th:text="${actividad.participantes}">Participantes</td>
+            <td th:text="${actividad.monitor?.nombre}">Monitor</td>
+            <td th:text="${actividad.descripcion}">Descripción</td>
+            <td>
+                <a th:href="@{'/actividades/' + ${actividad.id}}">Ver detalles</a>
+            </td>
+        </tr>
         </tbody>
     </table>
 </div>
