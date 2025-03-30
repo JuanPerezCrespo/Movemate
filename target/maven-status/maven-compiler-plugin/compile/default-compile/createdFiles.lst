@@ -1,0 +1,16 @@
+com/movemate/controller/ActividadController.class
+com/movemate/repository/ActividadRepository.class
+com/movemate/repository/ReservaRepository.class
+com/movemate/controller/HomeController.class
+com/movemate/model/Actividad.class
+com/movemate/repository/UsuarioRepository.class
+com/movemate/model/Usuario.class
+com/movemate/controller/LoginController.class
+com/movemate/model/Monitor.class
+com/movemate/security/CustomUserDetailsService.class
+com/movemate/controller/LoginRedirectController.class
+com/movemate/model/Reserva.class
+com/movemate/data/DataInitializer.class
+com/movemate/config/SecurityConfig.class
+com/movemate/security/CustomUserDetails.class
+com/movemate/MovemateApplication.class

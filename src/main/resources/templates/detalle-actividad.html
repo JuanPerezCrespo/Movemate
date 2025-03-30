@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title th:text="${actividad.nombre}">Actividad</title>
+</head>
+<body>
+
+    <div th:replace="fragments/sidebar :: sidebar"></div>
+
+<h2 th:text="${actividad.nombre}">Nombre</h2>
+<p><strong>Descripción:</strong> <span th:text="${actividad.descripcion}"></span></p>
+<p><strong>Ubicación:</strong> <span th:text="${actividad.ubicacion}"></span></p>
+<p><strong>Monitor:</strong> <span th:text="${actividad.monitor.username}"></span></p>
+
+<h3>Participantes:</h3>
+<ul>
+    <li th:each="reserva : ${actividad.reservas}" th:text="${reserva.usuario.username}"></li>
+</ul>
+
+<!-- Solo para CLIENTES -->
+<div sec:authorize="hasRole('CLIENTE')">
+    <form th:action="@{/actividades/reservar}" method="post">
+        <input type="hidden" th:name="actividadId" th:value="${actividad.id}" />
+        <button type="submit">Apuntarme</button>
+    </form>
+</div>
+
+<!-- Si es monitor, solo ve info -->
+<div sec:authorize="hasRole('MONITOR')">
+    <p style="color:gray;">(No puedes apuntarte a tu propia actividad)</p>
+</div>
+
+<a th:href="@{/actividades}">Volver al listado</a>
+
+</body>
+</html>

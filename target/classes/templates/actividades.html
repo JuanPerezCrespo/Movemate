@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Actividades disponibles</title>
+</head>
+<body>
+
+<!-- Menú lateral -->
+<div th:replace="fragments/sidebar :: sidebar"></div>
+
+<!-- Contenido principal -->
+<div class="content">
+    <h1>Actividades disponibles</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Deporte</th>
+                <th>Ubicación</th>
+                <th>Fecha</th>
+                <th>Precio</th>
+                <th>Participantes</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="actividad : ${actividades}">
+                <td th:text="${actividad.deporte}"></td>
+                <td th:text="${actividad.ubicacion}"></td>
+                <td th:text="${actividad.fecha}"></td>
+                <td th:text="${actividad.precio}"></td>
+                <td th:text="${actividad.participantes}"></td>
+                <td th:text="${actividad.descripcion}"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
