@@ -2,6 +2,15 @@ package com.movemate.controller;
 
 import com.movemate.model.*;
 import com.movemate.repository.*;
+
+import com.movemate.model.Actividad;
+import com.movemate.model.Cliente;
+import com.movemate.model.Reserva;
+import com.movemate.model.Usuario;
+import com.movemate.repository.ActividadRepository;
+import com.movemate.repository.ReservaRepository;
+import com.movemate.repository.UsuarioRepository;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
