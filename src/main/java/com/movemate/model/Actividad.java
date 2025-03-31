@@ -22,6 +22,17 @@ public class Actividad {
     private double precio;
     private int participantes;
     private String descripcion;
+    private String imagenUrl;
+
+    private int maxParticipantes = 10;
+
+    public int getMaxParticipantes() {
+        return maxParticipantes;
+    }
+
+    public void setMaxParticipantes(int maxParticipantes) {
+        this.maxParticipantes = maxParticipantes;
+    }
 
     private String estado = "Disponible"; // NUEVO CAMPO
 
@@ -112,5 +123,16 @@ public class Actividad {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+
+    // Getters y setters
+
+    public String getImagenUrl() {
+        return imagenUrl;
+    }
+
+    public void setImagenUrl(String imagenUrl) {
+        this.imagenUrl = imagenUrl;
     }
 }

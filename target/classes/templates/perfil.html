@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Perfil</title>
+</head>
+<body>
+<div th:replace="fragments/sidebar :: sidebar"></div>
+
+<div class="content" style="margin-left:240px; padding:30px;">
+    <h1>👤 Mi Perfil</h1>
+
+    <p><strong>Nombre:</strong> <span th:text="${usuario.nombre}">Nombre</span></p>
+    <p><strong>Email:</strong> <span th:text="${usuario.email}">Email</span></p>
+    <p><strong>Teléfono:</strong> <span th:text="${usuario.telefono}">Teléfono</span></p>
+    <p><strong>Género:</strong> <span th:text="${usuario.genero}">Género</span></p>
+    <p><strong>Dirección:</strong> <span th:text="${usuario.direccion}">Dirección</span></p>
+    <p><strong>Rol:</strong> <span th:text="${usuario.rol}">Rol</span></p>
+
+    <div th:if="${usuario instanceof T(com.movemate.model.Monitor)}">
+        <p><strong>Deporte:</strong>
+            <span th:text="${#fields.detailedErrors().isEmpty() ? ((T(com.movemate.model.Monitor)).cast(usuario)).deporte : ''}">Deporte</span>
+        </p>
+    </div>
+    <form action="/usuario/eliminar" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.')">
+        <button type="submit" class="btn btn-danger">Eliminar cuenta</button>
+    </form>
+
+    <a th:href="@{/}">⬅ Volver al inicio</a>
+</div>
+</body>
+</html>

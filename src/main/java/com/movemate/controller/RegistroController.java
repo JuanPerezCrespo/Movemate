@@ -37,7 +37,7 @@ public String procesarRegistro(
     @RequestParam String esMonitor,
     @RequestParam(required = false) String deporteMonitor) {
 
-    if (esMonitor.equals("si")) {
+        if (esMonitor.equals("true")) {
         Monitor monitor = new Monitor();
         monitor.setUsername(username);
         monitor.setPassword(passwordEncoder.encode(password));

@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.http.HttpMethod;
 
 
 @Configuration
@@ -22,6 +23,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/login", "/css/**", "/js/**").permitAll()
                 .requestMatchers("/registro", "/css/**", "/js/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/eliminar-cuenta").authenticated()
                 .requestMatchers("/", "/actividades", "/actividades/{id}").authenticated()
                 .requestMatchers("/actividades/nueva", "/actividades/guardar").hasRole("MONITOR")
                 

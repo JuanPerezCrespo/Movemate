@@ -2,6 +2,7 @@ com/movemate/repository/ActividadRepository.class
 com/movemate/repository/ReservaRepository.class
 com/movemate/repository/PagoRepository.class
 com/movemate/repository/UsuarioRepository.class
+com/movemate/config/WebConfig.class
 com/movemate/repository/MonitorRepository.class
 com/movemate/controller/LoginController.class
 com/movemate/model/Monitor.class

@@ -1,6 +1,7 @@
 /Users/arru/Movemate/src/main/java/com/movemate/model/Usuario.java
 /Users/arru/Movemate/src/main/java/com/movemate/repository/PagoRepository.java
 /Users/arru/Movemate/src/main/java/com/movemate/repository/ClienteRepository.java
+/Users/arru/Movemate/src/main/java/com/movemate/model/WebConfig.java
 /Users/arru/Movemate/src/main/java/com/movemate/model/Cliente.java
 /Users/arru/Movemate/src/main/java/com/movemate/MovemateApplication.java
 /Users/arru/Movemate/src/main/java/com/movemate/model/Reserva.java

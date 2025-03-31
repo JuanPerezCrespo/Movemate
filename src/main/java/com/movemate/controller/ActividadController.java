@@ -3,20 +3,18 @@ package com.movemate.controller;
 import com.movemate.model.*;
 import com.movemate.repository.*;
 
-import com.movemate.model.Actividad;
-import com.movemate.model.Cliente;
-import com.movemate.model.Reserva;
-import com.movemate.model.Usuario;
-import com.movemate.repository.ActividadRepository;
-import com.movemate.repository.ReservaRepository;
-import com.movemate.repository.UsuarioRepository;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.*;
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,11 +34,34 @@ public class ActividadController {
     }
 
     @GetMapping("/actividades")
-    public String listarActividades(Model model) {
-        List<Actividad> actividades = actividadRepository.findAll();
-        model.addAttribute("actividades", actividades);
-        return "actividades";
+public String listarActividades(@RequestParam(required = false, defaultValue = "todas") String mostrar,
+                                Model model) {
+
+    List<Actividad> actividades;
+
+    switch (mostrar) {
+        case "futuras" -> 
+            actividades = actividadRepository.findAll().stream()
+                .filter(a -> a.getFecha().isAfter(LocalDateTime.now()))
+                .filter(a -> !"Cancelada".equalsIgnoreCase(a.getEstado()))
+                .toList();
+        case "pasadas" -> 
+            actividades = actividadRepository.findAll().stream()
+                .filter(a -> a.getFecha().isBefore(LocalDateTime.now()))
+                .toList();
+        case "todas" -> 
+            actividades = actividadRepository.findAll();
+        default -> 
+            actividades = actividadRepository.findAll();
     }
+
+    model.addAttribute("actividades", actividades);
+    model.addAttribute("mostrar", mostrar);
+    return "actividades";
+}
+
+
+
 
     @GetMapping("/actividades/nueva")
     public String mostrarFormulario(Model model) {
@@ -49,12 +70,38 @@ public class ActividadController {
     }
 
     @PostMapping("/actividades/guardar")
-    public String guardarActividad(@ModelAttribute Actividad actividad, Authentication auth) {
+    public String guardarActividad(@ModelAttribute Actividad actividad,
+                                   @RequestParam("imagen") MultipartFile imagen,
+                                   Authentication auth) {
+
         String username = auth.getName();
         Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(username);
 
         if (usuarioOpt.isPresent() && usuarioOpt.get() instanceof Monitor monitor) {
             actividad.setMonitor(monitor);
+        }
+
+        // Guardar imagen en carpeta estática
+        if (!imagen.isEmpty()) {
+            String uploadsDir = "uploads/";
+            File uploadsFolder = new File(uploadsDir);
+            if (!uploadsFolder.exists()) {
+                uploadsFolder.mkdirs();
+            }
+
+            String filename = System.currentTimeMillis() + "_" + imagen.getOriginalFilename();
+            String path = uploadsDir + filename;
+
+            try {
+                Files.copy(imagen.getInputStream(), Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
+                actividad.setImagenUrl("/uploads/" + filename);
+            } catch (IOException e) {
+                e.printStackTrace();
+                actividad.setImagenUrl("/images/default.jpg");
+            }
+        } else {
+            // No se subió imagen → usar genérica
+            actividad.setImagenUrl("/images/default.jpg");
         }
 
         actividadRepository.save(actividad);
@@ -88,6 +135,10 @@ public class ActividadController {
                 reservaRepository.save(reserva);
 
                 actividad.setParticipantes(actividad.getParticipantes() + 1);
+                if (actividad.getParticipantes() >= actividad.getMaxParticipantes()) {
+                    actividad.setEstado("Completa");
+                }
+
                 actividadRepository.save(actividad);
 
                 redirectAttributes.addFlashAttribute("mensaje", "✅ Te has apuntado correctamente.");
@@ -159,4 +210,23 @@ public class ActividadController {
 
         return "mis-actividades";
     }
+    @PostMapping("/actividades/{id}/eliminar")
+    public String eliminarActividad(@PathVariable Long id, Authentication auth, RedirectAttributes redirectAttributes) {
+    Optional<Actividad> actividadOpt = actividadRepository.findById(id);
+
+     if (actividadOpt.isPresent()) {
+        Actividad actividad = actividadOpt.get();
+        String username = auth.getName();
+
+        // Solo el monitor que la creó puede eliminarla
+        if (actividad.getMonitor().getUsername().equals(username)) {
+            actividadRepository.delete(actividad);
+            redirectAttributes.addFlashAttribute("mensaje", "✅ Actividad eliminada correctamente.");
+        } else {
+            redirectAttributes.addFlashAttribute("mensaje", "❌ No tienes permisos para eliminar esta actividad.");
+        }
+    }
+
+    return "redirect:/actividades";
+}
 }

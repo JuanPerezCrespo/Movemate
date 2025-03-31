@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Actividades</title>
+</head>
+<body>
+<div th:replace="fragments/sidebar :: sidebar"></div>
+
+<div class="content" style="margin-left:240px; padding:30px;">
+    <h1>📋 Mis Actividades</h1>
+
+    <div th:if="${tipo == 'cliente'}">
+        <h2>Actividades reservadas</h2>
+        <ul>
+            <li th:each="reserva : ${reservas}">
+                <span th:text="${reserva.actividad.deporte}"></span> -
+                <span th:text="${reserva.actividad.fecha}"></span> en
+                <span th:text="${reserva.actividad.ubicacion}"></span>
+                (<a th:href="@{'/actividades/' + ${reserva.actividad.id}}">Ver detalle</a>)
+            </li>
+        </ul>
+    </div>
+
+    <div th:if="${tipo == 'monitor'}">
+        <h2>Actividades creadas</h2>
+        <ul>
+            <li th:each="actividad : ${actividades}">
+                <span th:text="${actividad.deporte}"></span> -
+                <span th:text="${actividad.fecha}"></span> en
+                <span th:text="${actividad.ubicacion}"></span>
+                (<a th:href="@{'/actividades/' + ${actividad.id}}">Ver detalle</a>)
+            </li>
+        </ul>
+    </div>
+
+    <a th:href="@{/}">⬅ Volver al inicio</a>
+</div>
+</body>
+</html>

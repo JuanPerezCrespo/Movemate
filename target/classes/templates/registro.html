@@ -3,36 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <title>Registro de Usuario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e3a8a;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            margin-top: 25px;
+            padding: 12px;
+            background-color: #1e3a8a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            background-color: #3b82f6;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #1e3a8a;
+        }
+    </style>
 </head>
 <body>
-    <div th:replace="fragments/sidebar :: sidebar"></div>
 
-    <div class="content">
-        <h1>Registro</h1>
-        <form th:action="@{/registro}" th:object="${cliente}" method="post">
-            <label>Nombre:</label>
-            <input type="text" th:field="*{nombre}" required /><br/>
+<h1>Registro</h1>
 
-            <label>Email:</label>
-            <input type="email" th:field="*{email}" required /><br/>
+<form th:action="@{/registro}" th:object="${cliente}" method="post">
+    <label>Nombre:</label>
+    <input type="text" th:field="*{nombre}" required />
 
-            <label>Teléfono:</label>
-            <input type="text" th:field="*{telefono}" /><br/>
+    <label>Email:</label>
+    <input type="email" th:field="*{email}" required />
 
-            <label>Género:</label>
-            <input type="text" th:field="*{genero}" /><br/>
+    <label>Teléfono:</label>
+    <input type="text" th:field="*{telefono}" />
 
-            <label>Dirección:</label>
-            <input type="text" th:field="*{direccion}" /><br/>
+    <label>Género:</label>
+    <select th:field="*{genero}">
+        <option value="Hombre">Hombre</option>
+        <option value="Mujer">Mujer</option>
+        <option value="Otro">Otro</option>
+    </select>
 
-            <label>Usuario:</label>
-            <input type="text" th:field="*{username}" required /><br/>
+    <label>Dirección:</label>
+    <input type="text" th:field="*{direccion}" />
 
-            <label>Contraseña:</label>
-            <input type="password" th:field="*{password}" required /><br/>
+    <label>Usuario:</label>
+    <input type="text" th:field="*{username}" required />
 
-            <button type="submit">Registrarse</button>
-        </form>
+    <label>Contraseña:</label>
+    <input type="password" th:field="*{password}" required />
+
+    <label>¿Eres monitor?</label>
+    <select id="esMonitor" name="esMonitor" onchange="toggleDeporte()">
+        <option value="false">No</option>
+        <option value="true">Sí</option>
+    </select>
+
+    <div id="deporteMonitor" style="display: none;">
+        <label>Deporte que impartes:</label>
+        <input type="text" name="deporteMonitor" />
     </div>
+
+    <button type="submit">Registrarse</button>
+</form>
+
+<a class="back-link" th:href="@{/login}">⬅ Volver al login</a>
+
+<script>
+    function toggleDeporte() {
+        const select = document.getElementById("esMonitor");
+        const deporteDiv = document.getElementById("deporteMonitor");
+        deporteDiv.style.display = select.value === "true" ? "block" : "none";
+    }
+</script>
+
 </body>
 </html>
