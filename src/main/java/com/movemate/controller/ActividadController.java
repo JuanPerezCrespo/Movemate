@@ -39,29 +39,29 @@ public class ActividadController {
     // Permite filtrar las actividades por estado (futuras, pasadas o todas).
    
     @GetMapping("/actividades")
-    public String listarActividades(@RequestParam(required = false, defaultValue = "todas") String mostrar,
-            Model model) {
-
+    public String listarActividades(@RequestParam(required = false, defaultValue = "todas") String mostrar, Model model) {
+        LocalDateTime fechaActual = LocalDateTime.now(); // Variable con la fecha actual
         List<Actividad> actividades;
-
+    
         switch (mostrar) {
-            case "futuras" ->
+            case "futuras" -> // Filtrar actividades con fecha posterior a la actual
                 actividades = actividadRepository.findAll().stream()
-                        .filter(a -> a.getFecha().isAfter(LocalDateTime.now()))
+                        .filter(a -> a.getFecha().isAfter(fechaActual))
                         .filter(a -> !"Cancelada".equalsIgnoreCase(a.getEstado()))
                         .toList();
-            case "pasadas" ->
+            case "pasadas" -> // Filtrar actividades con fecha anterior a la actual
                 actividades = actividadRepository.findAll().stream()
-                        .filter(a -> a.getFecha().isBefore(LocalDateTime.now()))
+                        .filter(a -> a.getFecha().isBefore(fechaActual))
                         .toList();
-            case "todas" ->
+            case "todas" -> // Mostrar todas las actividades
                 actividades = actividadRepository.findAll();
-            default ->
+            default -> // Por defecto, mostrar todas las actividades
                 actividades = actividadRepository.findAll();
         }
-
+    
         model.addAttribute("actividades", actividades);
         model.addAttribute("mostrar", mostrar);
+        model.addAttribute("fechaActual", fechaActual); // Pasar la fecha actual al modelo (opcional)
         return "actividades";
     }
 
@@ -200,6 +200,19 @@ public class ActividadController {
         return "redirect:/actividades";
     }
 
+    @PostMapping("/actividades/{id}/habilitar")
+    public String habilitarActividad(@PathVariable Long id, Authentication auth) {
+        Optional<Actividad> optActividad = actividadRepository.findById(id);
+        if (optActividad.isPresent()) {
+            Actividad actividad = optActividad.get();
+            if (actividad.getMonitor().getUsername().equals(auth.getName()) && "Cancelada".equals(actividad.getEstado())) {
+                actividad.setEstado("Disponible");
+                actividadRepository.save(actividad);
+            }
+        }
+        return "redirect:/actividades";
+    }
+
     // Método para mostrar las actividades del usuario autenticado
     // Dependiendo de si es cliente o monitor, se mostrarán reservas o actividades
     // respectivamente.
@@ -250,6 +263,60 @@ public class ActividadController {
             }
         }
 
+        return "redirect:/actividades";
+    }
+
+    @GetMapping("/actividades/{id}/editar")
+    public String mostrarFormularioEdicion(@PathVariable Long id, Model model, Authentication auth) {
+        Optional<Actividad> actividadOpt = actividadRepository.findById(id);
+
+        if (actividadOpt.isPresent()) {
+            Actividad actividad = actividadOpt.get();
+            if (actividad.getMonitor().getUsername().equals(auth.getName())) {
+                model.addAttribute("actividad", actividad);
+                return "editar-actividad";
+            }
+        }
+        return "redirect:/actividades";
+    }
+
+    @PatchMapping("/actividades/{id}/editar")
+    public String editarActividad(@PathVariable Long id, @ModelAttribute Actividad actividadActualizada,
+                                   @RequestParam("imagen") MultipartFile imagen, Authentication auth) {
+        Optional<Actividad> actividadOpt = actividadRepository.findById(id);
+
+        if (actividadOpt.isPresent()) {
+            Actividad actividad = actividadOpt.get();
+            if (actividad.getMonitor().getUsername().equals(auth.getName())) {
+                actividad.setDeporte(actividadActualizada.getDeporte());
+                actividad.setUbicacion(actividadActualizada.getUbicacion());
+                actividad.setFecha(actividadActualizada.getFecha());
+                actividad.setPrecio(actividadActualizada.getPrecio());
+                actividad.setDescripcion(actividadActualizada.getDescripcion());
+                actividad.setMaxParticipantes(actividadActualizada.getMaxParticipantes());
+
+                // Actualizar imagen si se sube una nueva
+                if (!imagen.isEmpty()) {
+                    String uploadsDir = "uploads/";
+                    File uploadsFolder = new File(uploadsDir);
+                    if (!uploadsFolder.exists()) {
+                        uploadsFolder.mkdirs();
+                    }
+
+                    String filename = System.currentTimeMillis() + "_" + imagen.getOriginalFilename();
+                    String path = uploadsDir + filename;
+
+                    try {
+                        Files.copy(imagen.getInputStream(), Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
+                        actividad.setImagenUrl("/uploads/" + filename);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                actividadRepository.save(actividad);
+            }
+        }
         return "redirect:/actividades";
     }
 }

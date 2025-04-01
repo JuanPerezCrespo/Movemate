@@ -63,7 +63,7 @@
         <input type="text" th:field="*{ubicacion}" />
     
         <label>Fecha y hora:</label>
-        <input type="datetime-local" th:field="*{fecha}" />
+        <input type="datetime-local" th:field="*{fecha}" min="1000-01-01T00:00" max="9999-12-31T23:59" />
     
         <label>Precio:</label>
         <input type="number" step="0.01" th:field="*{precio}" />

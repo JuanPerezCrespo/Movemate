@@ -96,6 +96,12 @@
                 ❌ Cancelar actividad
             </button>
         </form>
+        <form th:action="@{'/actividades/' + ${actividad.id} + '/habilitar'}" method="post" 
+                th:if="${#authentication.name == actividad.monitor.username and actividad.estado == 'Cancelada'}">
+                <button type="submit" class="btn btn-success mt-3">
+                    ✅ Habilitar Actividad
+                </button>
+        </form>
         <form th:action="@{'/actividades/' + ${actividad.id} + '/eliminar'}" method="post" 
                 th:if="${#authentication.name == actividad.monitor.username}">
                 <button type="submit" class="btn btn-danger mt-3"
@@ -109,12 +115,7 @@
                     ✏️ Editar Actividad
                 </button>
         </form>
-        <form th:action="@{'/actividades/' + ${actividad.id} + '/habilitar'}" method="post" 
-                th:if="${#authentication.name == actividad.monitor.username and actividad.estado == 'Cancelada'}">
-                <button type="submit" class="btn btn-success mt-3">
-                    ✅ Habilitar Actividad
-                </button>
-        </form>
+        
 
         <a th:href="@{/actividades}">⬅ Volver al listado</a>
     </div>

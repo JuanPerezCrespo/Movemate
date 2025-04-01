@@ -24,7 +24,7 @@ public class Actividad {
     private String descripcion;
     private String imagenUrl;
 
-    private int maxParticipantes = 10;
+    private int maxParticipantes;
 
     public int getMaxParticipantes() {
         return maxParticipantes;
