@@ -51,31 +51,41 @@ public class ActividadController {
     // Permite filtrar las actividades por estado (futuras, pasadas o todas).
    
     @GetMapping("/actividades")
-    public String listarActividades(@RequestParam(required = false, defaultValue = "todas") String mostrar, Model model) {
-        LocalDateTime fechaActual = LocalDateTime.now(); // Variable con la fecha actual
-        List<Actividad> actividades;
-    
-        switch (mostrar) {
-            case "futuras" -> // Filtrar actividades con fecha posterior a la actual
-                actividades = actividadRepository.findAll().stream()
-                        .filter(a -> a.getFecha().isAfter(fechaActual))
-                        .filter(a -> !"Cancelada".equalsIgnoreCase(a.getEstado()))
-                        .toList();
-            case "pasadas" -> // Filtrar actividades con fecha anterior a la actual
-                actividades = actividadRepository.findAll().stream()
-                        .filter(a -> a.getFecha().isBefore(fechaActual))
-                        .toList();
-            case "todas" -> // Mostrar todas las actividades
-                actividades = actividadRepository.findAll();
-            default -> // Por defecto, mostrar todas las actividades
-                actividades = actividadRepository.findAll();
+public String listarActividades(
+        @RequestParam(required = false, defaultValue = "todas") String mostrar,
+        @RequestParam(required = false) Double minPrice,
+        @RequestParam(required = false) Double maxPrice,
+        Model model) {
+    LocalDateTime fechaActual = LocalDateTime.now(); // Variable con la fecha actual
+    List<Actividad> actividades;
+
+    switch (mostrar) {
+        case "futuras" -> // Filtrar actividades con fecha posterior a la actual
+            actividades = actividadRepository.findAll().stream()
+                    .filter(a -> a.getFecha().isAfter(fechaActual))
+                    .filter(a -> !"Cancelada".equalsIgnoreCase(a.getEstado()))
+                    .toList();
+        case "pasadas" -> // Filtrar actividades con fecha anterior a la actual
+            actividades = actividadRepository.findAll().stream()
+                    .filter(a -> a.getFecha().isBefore(fechaActual))
+                    .toList();
+        case "precio" -> { // Filtrar actividades por rango de precios
+            actividades = actividadRepository.findAll().stream()
+                    .filter(a -> (minPrice == null || a.getPrecio() >= minPrice))
+                    .filter(a -> (maxPrice == null || a.getPrecio() <= maxPrice))
+                    .toList();
         }
-    
-        model.addAttribute("actividades", actividades);
-        model.addAttribute("mostrar", mostrar);
-        model.addAttribute("fechaActual", fechaActual); // Pasar la fecha actual al modelo (opcional)
-        return "actividades";
+        case "todas" -> // Mostrar todas las actividades
+            actividades = actividadRepository.findAll();
+        default -> // Por defecto, mostrar todas las actividades
+            actividades = actividadRepository.findAll();
     }
+
+    model.addAttribute("actividades", actividades);
+    model.addAttribute("mostrar", mostrar);
+    model.addAttribute("fechaActual", fechaActual); // Pasar la fecha actual al modelo (opcional)
+    return "actividades";
+}
 
     @GetMapping("/actividades/nueva")
     public String mostrarFormulario(Model model) {

@@ -31,7 +31,28 @@
                 th:classappend="${mostrar} == 'pasadas' ? 'active' : ''">
                 Actividades Pasadas
             </a>
+            <button class="boton" onclick="togglePriceFilter()">Precio</button>
         </div>
+        
+        <!-- Formulario para filtrar por precio -->
+        <div id="price-filter" style="display: none; margin-top: 10px;">
+            <form th:action="@{/actividades}" method="get">
+                <input type="hidden" name="mostrar" value="precio" />
+                <label for="minPrice">Precio mínimo:</label>
+                <input type="number" id="minPrice" name="minPrice" step="0.01" placeholder="0.00" />
+                <label for="maxPrice">Precio máximo:</label>
+                <input type="number" id="maxPrice" name="maxPrice" step="0.01" placeholder="0.00" />
+                <button type="submit">Filtrar</button>
+            </form>
+        </div>
+        
+        <script>
+            function togglePriceFilter() {
+                const priceFilter = document.getElementById('price-filter');
+                priceFilter.style.display = priceFilter.style.display === 'none' ? 'block' : 'none';
+            }
+        </script>
+
 
         <!-- Mapa de Leaflet -->
         <div id="map" style="width: 100%; height: 500px; margin-bottom: 20px;"></div>
