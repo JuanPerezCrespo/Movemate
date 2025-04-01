@@ -32,27 +32,40 @@
                 Actividades Pasadas
             </a>
             <button class="boton" onclick="togglePriceFilter()">Precio</button>
-        </div>
-        
-        <!-- Formulario para filtrar por precio -->
-        <div id="price-filter" style="display: none; margin-top: 10px;">
-            <form th:action="@{/actividades}" method="get">
-                <input type="hidden" name="mostrar" value="precio" />
+
+            <!-- Formulario combinado para todos los filtros -->
+            <form th:action="@{/actividades}" method="get" style="display: inline-block;">
+                <label for="ubicacion">Ubicación:</label>
+                <select id="ubicacion" name="ubicacion" onchange="this.form.submit()">
+                    <option value="" th:selected="${ubicacion == null || ubicacion == ''}">Todas las ubicaciones</option>
+                    <option value="Madrid" th:selected="${ubicacion == 'Madrid'}">Madrid</option>
+                    <option value="Barcelona" th:selected="${ubicacion == 'Barcelona'}">Barcelona</option>
+                    <option value="Valencia" th:selected="${ubicacion == 'Valencia'}">Valencia</option>
+                    <option value="Sevilla" th:selected="${ubicacion == 'Sevilla'}">Sevilla</option>
+                    <option value="Zaragoza" th:selected="${ubicacion == 'Zaragoza'}">Zaragoza</option>
+                    <option value="Málaga" th:selected="${ubicacion == 'Málaga'}">Málaga</option>
+                </select>
+
+                <label for="deporte">Deporte:</label>
+                <select id="deporte" name="deporte" onchange="this.form.submit()">
+                    <option value="" th:selected="${deporte == null || deporte == ''}">Todos los deportes</option>
+                    <option value="Fútbol" th:selected="${deporte == 'Fútbol'}">Fútbol</option>
+                    <option value="Baloncesto" th:selected="${deporte == 'Baloncesto'}">Baloncesto</option>
+                    <option value="Tenis" th:selected="${deporte == 'Tenis'}">Tenis</option>
+                    <option value="Natación" th:selected="${deporte == 'Natación'}">Natación</option>
+                    <option value="Ciclismo" th:selected="${deporte == 'Ciclismo'}">Ciclismo</option>
+                    <option value="Running" th:selected="${deporte == 'Running'}">Running</option>
+                </select>
+
                 <label for="minPrice">Precio mínimo:</label>
-                <input type="number" id="minPrice" name="minPrice" step="0.01" placeholder="0.00" />
+                <input type="number" id="minPrice" name="minPrice" step="0.01" placeholder="0.00" th:value="${minPrice}" />
+
                 <label for="maxPrice">Precio máximo:</label>
-                <input type="number" id="maxPrice" name="maxPrice" step="0.01" placeholder="0.00" />
+                <input type="number" id="maxPrice" name="maxPrice" step="0.01" placeholder="0.00" th:value="${maxPrice}" />
+
                 <button type="submit">Filtrar</button>
             </form>
         </div>
-        
-        <script>
-            function togglePriceFilter() {
-                const priceFilter = document.getElementById('price-filter');
-                priceFilter.style.display = priceFilter.style.display === 'none' ? 'block' : 'none';
-            }
-        </script>
-
 
         <section id="actividades">
             <div th:each="actividad : ${actividades}" class="actividad">

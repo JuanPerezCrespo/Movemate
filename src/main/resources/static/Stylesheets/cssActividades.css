@@ -25,7 +25,7 @@ h1 {
 /* Botones de filtro */
 #botones {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 20px;
@@ -50,10 +50,11 @@ h1 {
 
 /* Contenedor de actividades */
 #actividades {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    justify-content: center;
+    display: grid; /* Cambiar a Grid Layout */
+    grid-template-columns: repeat(3, 1fr); /* Tres columnas de igual ancho */
+    gap: 20px; /* Espaciado entre las tarjetas */
+    justify-items: center; /* Centrar las tarjetas horizontalmente */
+    margin-top: 20px; /* Espaciado superior */
 }
 
 /* Tarjetas de actividades */
@@ -65,7 +66,6 @@ h1 {
     margin: 10px 10px; /* Espaciado vertical entre filas */
     display: flex; /* Flexbox para alinear elementos */
     flex-direction: column; /* Coloca los elementos en columna */
-    width: 33%;
 }
 
 .actividad:hover {
