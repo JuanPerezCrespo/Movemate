@@ -14,7 +14,7 @@ h1 {
 }
 
 .content {
-    margin: 20px auto;
+    margin: 10px;
     padding: 20px;
     max-width: auto; /* Centrar el contenido */
     background-color: #fff; /* Fondo blanco */

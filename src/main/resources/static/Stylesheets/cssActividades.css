@@ -1,0 +1,149 @@
+/* Estilo general */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9; /* Fondo gris claro */
+    color: #333; /* Color del texto */
+}
+
+h1 {
+    text-align: center;
+    color: #4CAF50; /* Verde suave */
+    margin-bottom: 20px;
+}
+
+/* Contenedor principal */
+#contenido {
+    margin: 10px;
+    padding: 20px;
+    background-color: #fff; /* Fondo blanco */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    margin-left: 240px;
+}
+
+/* Botones de filtro */
+.mb-4 {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.mb-4 .btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.mb-4 .btn-outline-primary {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+}
+
+.mb-4 .btn-outline-primary:hover {
+    background-color: #388E3C;
+}
+
+.mb-4 .btn-outline-secondary {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+}
+
+.mb-4 .btn-outline-secondary:hover {
+    background-color: #1976D2;
+}
+
+.mb-4 .btn-outline-warning {
+    background-color: #FFC107;
+    color: white;
+    border: none;
+}
+
+.mb-4 .btn-outline-warning:hover {
+    background-color: #FFA000;
+}
+
+/* Contenedor de actividades */
+#actividades {
+    display: flex;
+    flex-wrap: wrap; /* Permite que las tarjetas se ajusten en pantallas pequeñas */
+    gap: 30px; /* Aumenta el espacio entre las tarjetas */
+    justify-content: center; /* Centra las tarjetas en el contenedor */
+}
+
+/* Tarjetas de actividades */
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box; /* Incluye padding y border en el tamaño total */
+    width: auto; /* Permite que la tarjeta se ajuste al contenido */
+    height: 370px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-top {
+    width: 250px; /* Ancho fijo para la imagen */
+    height: 150px; /* Altura fija para la imagen */
+    object-fit: cover; /* Asegura que la imagen se ajuste sin deformarse */
+    padding: 5px;
+}
+
+.card-body {
+    padding: 10px;
+    display: flex;
+    flex-direction: column; /* Asegura que los elementos se apilen verticalmente */
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.card-body p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.card-body .btn {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    width: fit-content;
+    align-self: center; /* Centra el botón horizontalmente */
+}
+
+.card-body .btn:hover {
+    background-color: #388E3C;
+}
+
+/* Etiqueta de cancelada */
+.badge {
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 5px;
+    background-color: #e0e0e0;
+    color: #757575;
+}
