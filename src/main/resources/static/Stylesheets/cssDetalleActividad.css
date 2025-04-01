@@ -1,7 +1,24 @@
+/* Contenedor principal */
 .content {
-    margin-left: 200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff; /* Fondo blanco */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    max-width: 800px; /* Ancho máximo */
     font-family: Arial, sans-serif;
     font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrar horizontalmente */
+    justify-content: center; /* Centrar verticalmente */
+}
+
+/* Título principal */
+#actividad-detalle h1 {
+    text-align: center;
+    color: #1e3a8a; /* Azul oscuro */
+    margin-bottom: 20px;
 }
 
 #actividad-detalle {
@@ -13,39 +30,144 @@
     width: fit-content;
 }
 
-section h1 {
-    text-align: center;
-    color: #4CAF50;
-    /* Verde suave */
-    margin-bottom: 20px;
-}
-
+/* Información de la actividad */
 .actividad-info {
     display: flex;
     flex-direction: column;
+    gap: 10px; /* Espaciado entre los elementos */
+    padding: 20px;
+    background-color: #f9f9f9; /* Fondo claro */
+    border-radius: 8px; /* Bordes redondeados */
+    border: 1px solid #ccc; /* Borde gris claro */
+    margin-bottom: 20px;
+    align-items: center; /* Centrar contenido dentro */
+    text-align: center; /* Centrar texto */
 }
 
-section div p {
-    margin: 5px;
+.actividad-info p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #333; /* Texto oscuro */
 }
 
+/* Participantes inscritos */
+#actividad-detalle ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0;
+    text-align: center; /* Centrar texto */
+}
+
+#actividad-detalle ul li {
+    background-color: #e3f2fd; /* Azul claro */
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    text-align: center; /* Centrar texto */
+}
+
+/* Mensajes de estado */
+#actividad-cliente p {
+    color: red;
+    font-weight: bold;
+    margin: 10px 0;
+    text-align: center; /* Centrar texto */
+}
+
+/* Contenedor de los botones (sin fondo ni borde) */
 #actividad-cliente {
     display: flex;
     flex-direction: column;
-    background-color:#f9f9f9;
-    border-radius: 5px;
-    border: 1px solid #ccc;
     width: fit-content;
-    padding: 20px;
-    padding-top: 0px;
-    margin: 20px;
+    padding: 0; /* Eliminar padding */
+    margin: 20px auto; /* Centrar horizontalmente */
+    align-items: center; /* Centrar contenido */
+    background-color: transparent; /* Fondo transparente */
+    border: none; /* Sin borde */
 }
 
+/* Botones de acción para apuntarse y desapuntarse */
+#actividad-cliente button {
+    padding: 10px 20px;
+    background-color: #1e3a8a; /* Azul oscuro */
+    color: white;
+    border: none;
+    border-radius: 4px; /* Bordes redondeados */
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+#actividad-cliente button:hover {
+    background-color: #3b82f6; /* Azul claro */
+    transform: translateY(-2px); /* Efecto de elevación */
+}
+
+#actividad-cliente button:active {
+    background-color: #1e40af; /* Azul más oscuro */
+    transform: translateY(0); /* Volver a la posición original */
+}
+
+/* Botones de acción */
 #botones {
     display: flex;
-    flex-direction: row;
-    justify-content: left;
+    flex-wrap: wrap;
+    gap: 10px; /* Espaciado entre botones */
     margin-top: 20px;
-    width: fit-content;
-    gap: 10px;
+    justify-content: center; /* Centrar botones */
+}
+
+#botones button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#botones .btn-danger {
+    background-color: #e74c3c; /* Rojo */
+    color: white;
+}
+
+#botones .btn-danger:hover {
+    background-color: #c0392b; /* Rojo oscuro */
+}
+
+#botones .btn-success {
+    background-color: #2ecc71; /* Verde */
+    color: white;
+}
+
+#botones .btn-success:hover {
+    background-color: #27ae60; /* Verde oscuro */
+}
+
+#botones .btn-primary {
+    background-color: #3498db; /* Azul */
+    color: white;
+}
+
+#botones .btn-primary:hover {
+    background-color: #2980b9; /* Azul oscuro */
+}
+
+/* Botón de volver */
+#volver {
+    display: inline-block;
+    margin-top: 20px;
+    text-decoration: none;
+    color: #1e3a8a; /* Azul oscuro */
+    font-weight: bold;
+    transition: color 0.3s ease;
+    text-align: center; /* Centrar texto */
+}
+
+#volver:hover {
+    color: #3b82f6; /* Azul claro */
 }

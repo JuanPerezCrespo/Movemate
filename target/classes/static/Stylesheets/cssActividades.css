@@ -48,6 +48,54 @@ h1 {
     background-color: #1976D2;
 }
 
+/* Caja de filtros */
+.filtros-container {
+    background-color: #fff; /* Fondo blanco */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    padding: 20px; /* Espaciado interno */
+    margin-bottom: 20px; /* Espaciado inferior */
+    max-width: 800px; /* Ancho máximo */
+    margin: 0 auto; /* Centrar horizontalmente */
+}
+
+.filtros-container h2 {
+    text-align: center;
+    color: #1e3a8a; /* Azul oscuro */
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Contenedor de los filtros */
+.filtros-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; /* Espaciado entre los elementos */
+    justify-content: center; /* Centrar los filtros */
+    align-items: center;
+}
+
+/* Botones dentro de la caja */
+.filtros-box .boton {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #1e3a8a; /* Azul oscuro */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.filtros-box .boton:hover {
+    background-color: #3b82f6; /* Azul claro */
+}
+
 /* Contenedor de actividades */
 #actividades {
     display: grid; /* Cambiar a Grid Layout */
