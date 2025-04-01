@@ -53,7 +53,7 @@
 
         <p><strong>Deporte:</strong> <span th:text="${actividad.deporte}"></span></p>
         <p><strong>Ubicación:</strong> <span th:text="${actividad.ubicacion}"></span></p>
-        <p><strong>Fecha y hora:</strong> <span th:text="${actividad.fecha}"></span></p>
+        <p><strong>Fecha y hora:</strong> <span th:text="${#temporals.format(actividad.fecha, 'dd/MM/yyyy HH:mm')}"></span></p>
         <p><strong>Precio:</strong> <span th:text="${actividad.precio}"></span> €</p>
         <p><strong>Participantes:</strong> <span th:text="${actividad.participantes}+'/'+${actividad.maxParticipantes}"></span></p>
         <p><strong>Descripción:</strong> <span th:text="${actividad.descripcion}"></span></p>
@@ -95,8 +95,14 @@
         <form th:action="@{/actividades/{id}/cancelar(id=${actividad.id})}" method="post"
             th:if="${#authentication.name == actividad.monitor.username and actividad.estado != 'Cancelada'}">
             <button type="submit" class="btn btn-danger mt-3">
-                Cancelar actividad
+                ❌ Cancelar actividad
             </button>
+        </form>
+        <form th:action="@{'/actividades/' + ${actividad.id} + '/habilitar'}" method="post" 
+                th:if="${#authentication.name == actividad.monitor.username and actividad.estado == 'Cancelada'}">
+                <button type="submit" class="btn btn-success mt-3">
+                    ✅ Habilitar Actividad
+                </button>
         </form>
         <form th:action="@{'/actividades/' + ${actividad.id} + '/eliminar'}" method="post" 
                 th:if="${#authentication.name == actividad.monitor.username}">
@@ -105,6 +111,13 @@
                     🗑️ Eliminar Actividad
                 </button>
         </form>
+        <form th:action="@{'/actividades/' + ${actividad.id} + '/editar'}" method="get" 
+                th:if="${#authentication.name == actividad.monitor.username}">
+                <button type="submit" class="btn btn-primary mt-3">
+                    ✏️ Editar Actividad
+                </button>
+        </form>
+        
 
         <a th:href="@{/actividades}">⬅ Volver al listado</a>
     </div>

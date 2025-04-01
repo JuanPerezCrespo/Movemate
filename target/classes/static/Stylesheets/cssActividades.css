@@ -1,0 +1,136 @@
+/* Estilo general */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    /* Fondo gris claro */
+    color: #333;
+    /* Color del texto */
+}
+
+h1 {
+    text-align: center;
+    color: black;
+    /* Verde suave */
+    margin-bottom: 20px;
+}
+
+/* Contenedor principal */
+#contenido {
+    margin: 10px;
+    padding: 20px;
+    background-color: #fff;
+    /* Fondo blanco */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Sombra ligera */
+    margin-left: 240px;
+}
+
+/* Botones de filtro */
+#botones {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.boton {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+.boton:hover {
+    background-color: #1976D2;
+}
+
+/* Contenedor de actividades */
+#actividades {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Tarjetas de actividades */
+.actividad {
+    background-color: #fff9c4; /* Fondo amarillo */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    padding: 10px; /* Espaciado interno */
+    margin: 10px 10px; /* Espaciado vertical entre filas */
+    display: flex; /* Flexbox para alinear elementos */
+    flex-direction: column; /* Coloca los elementos en columna */
+    width: 33%;
+}
+
+.actividad:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.imagen-actividad{
+    object-fit: contain; /* Mantiene la proporción de la imagen */
+    width: 100%; /* Ancho completo del contenedor */
+}
+
+.card-body {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.card-body p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.card-body .btn {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    width: fit-content;
+    align-self: center;
+}
+
+.card-body .btn:hover {
+    background-color: #388E3C;
+}
+
+/* Etiqueta de cancelada */
+.badge {
+    display: inline-block;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    background-color: red;
+    color: white;
+    text-align: center;
+    width: fit-content;
+    align-self: center;
+}
