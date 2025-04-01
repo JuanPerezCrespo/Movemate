@@ -48,7 +48,7 @@ public class ActividadController {
             case "futuras" ->
                 actividades = actividadRepository.findAll().stream()
                         .filter(a -> a.getFecha().isAfter(LocalDateTime.now()))
-                        .filter(a -> !"Cancelada".equalsIgnoreCase(a.getEstado()))
+                        .filter(a -> !("Cancelada".equalsIgnoreCase(a.getEstado())))
                         .toList();
             case "pasadas" ->
                 actividades = actividadRepository.findAll().stream()
@@ -115,6 +115,7 @@ public class ActividadController {
         Optional<Actividad> actividadOpt = actividadRepository.findById(id);
 
         if (actividadOpt.isPresent()) {
+            Actividad actividad = actividadOpt.get();
             model.addAttribute("actividad", actividadOpt.get());
             return "detalle-actividad";
         } else {
@@ -169,12 +170,25 @@ public class ActividadController {
             Actividad actividad = actividadOpt.get();
             List<Reserva> reservas = reservaRepository.findByUsuarioAndActividad(cliente, actividad);
 
+            // Verificar si el usuario tiene una reserva para esta actividad
             if (!reservas.isEmpty()) {
-                reservas.forEach(reservaRepository::delete);
+                // Eliminar la reserva del usuario
+                reservaRepository.delete(reservas.get(0)); // Eliminar solo la primera reserva encontrada
 
-                int nuevosParticipantes = actividad.getParticipantes() - reservas.size();
+                // Reducir el número de participantes en 1
+                int nuevosParticipantes = actividad.getParticipantes() - 1;
                 actividad.setParticipantes(Math.max(nuevosParticipantes, 0));
+
+                // Cambiar el estado a "Disponible" si la actividad no está cancelada y hay plazas libres
+                if (!"Cancelada".equalsIgnoreCase(actividad.getEstado())
+                && nuevosParticipantes < actividad.getMaxParticipantes()) {
+                    actividad.setEstado("Disponible");
+                    System.out.println("🔁 Estado actualizado a: " + actividad.getEstado());
+                }
+
+                // Guardar los cambios en la base de datos
                 actividadRepository.save(actividad);
+                System.out.println("💾 Actividad guardada con estado: " + actividad.getEstado());
 
                 redirectAttributes.addFlashAttribute("mensaje", "✅ Te has desapuntado correctamente.");
             } else {
