@@ -54,6 +54,7 @@ h1 {
     border-radius: 8px;
     padding: 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    align-items: center;
 }
 
 .user-activities h2 {
@@ -69,8 +70,8 @@ h1 {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
     padding: 10px; /* Espaciado interno */
     margin: 10px 0; /* Espaciado vertical entre filas */
-    flex: 1 1 calc(33.33%); /* Ocupa un tercio del ancho del contenedor menos el espacio del gap */
-    max-width: calc(33.33%); /* Asegura que no exceda un tercio del ancho */
+    flex: 1 1 calc(33% - 20px); /* Ocupa un tercio del ancho, restando el gap */
+    max-width: calc(33% - 20px); /* Limita el ancho */
     display: inline-block; /* Permite que los elementos se alineen en filas */
 }
 
