@@ -41,7 +41,7 @@
                 </div>
                 <div class="user-activities">
                     <h2 style="text-align: center;">Mis actividades reservadas</h2>
-                    <section style="display: flex; flex-direction: row;">
+                    <section style="display: flex; flex-direction: row; justify-content: center;">
                         <div th:each="reserva : ${reservas}" class="actividad">
                             <img th:src="@{${reserva.actividad.imagenUrl}}" alt="Imagen de la actividad"
                                 class="imagen-actividad" onerror="this.src='/images/default.jpg'">
@@ -58,11 +58,10 @@
                                             th:text="${reserva.actividad.ubicacion}"></span>
                                     </p>
                                 </li>
-                                <li>
-                                    <strong> <a th:href="@{'/actividades/' + ${reserva.actividad.id}}">Ver detalle de la
-                                            actividad</a></strong>
-                                </li>
                             </ul>
+                            <button class="detalles">
+                                <strong> <a th:href="@{'/actividades/' + ${reserva.actividad.id}}">Más detalles</a></strong>
+                            </button>
                         </div>
                     </section>
                 </div>
@@ -71,7 +70,7 @@
 
         <div th:if="${tipo == 'monitor'}" id="contenido-monitor">
             <h2 style="text-align: center;">Mis actividades creadas</h2>
-            <section style="display: flex; flex-direction: row;">
+            <section style="display: flex; flex-direction: row; justify-content: center;">
                 <div th:each="actividad : ${actividades}" class="actividades-monitor">
                     <img th:src="@{${actividad.imagenUrl}}" alt="Imagen de la actividad"
                                 class="imagen-actividad" onerror="this.src='/images/default.jpg'">
@@ -88,11 +87,10 @@
                                     th:text="${actividad.ubicacion}"></span>
                             </p>
                         </li>
-                        <li>
-                            <strong> <a th:href="@{'/actividades/' + ${actividad.id}}">Ver detalle de la
-                                    actividad</a></strong>
-                        </li>
                     </ul>
+                    <button class="detalles">
+                        <strong> <a th:href="@{'/actividades/' + ${actividad.id}}">Más detalles</a></strong>
+                    </button>
                 </div>
             </section>
         </div>

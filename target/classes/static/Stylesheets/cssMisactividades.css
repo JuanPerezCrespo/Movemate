@@ -11,6 +11,7 @@ h1 {
     text-align: center;
     color: #4CAF50; /* Verde suave */
     margin-bottom: 20px;
+    margin-top: 0px;
 }
 
 #content{
@@ -58,11 +59,28 @@ div ul {
     margin: 10px 10px; /* Espaciado vertical entre filas */
     display: flex; /* Flexbox para alinear elementos */
     flex-direction: column; /* Coloca los elementos en columna */
-    width: 33%;
+    width: 28%; /* Ancho de cada tarjeta */
     font-size: 14px;
 }
 
 .imagen-actividad{
     object-fit: contain; /* Mantiene la proporción de la imagen */
     width: 100%; /* Ancho completo del contenedor */
+}
+
+.detalles{
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #4CAF50;
+    width: fit-content;
+    align-self: center;
+    border-radius: 5px;
+    border: none;
+}
+
+button strong a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+
 }
