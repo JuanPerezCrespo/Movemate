@@ -371,6 +371,8 @@ public String reservar(@RequestParam Long actividadId, Authentication auth, Redi
                 actividad.setPrecio(actividadActualizada.getPrecio());
                 actividad.setDescripcion(actividadActualizada.getDescripcion());
                 actividad.setMaxParticipantes(actividadActualizada.getMaxParticipantes());
+                actividad.setNivel(actividadActualizada.getNivel()); // Actualizar el nivel de la actividad
+                actividad.setDireccion(actividadActualizada.getDireccion()); // Actualizar la dirección
 
                 // Actualizar imagen si se sube una nueva
                 if (!imagen.isEmpty()) {
