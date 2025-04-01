@@ -51,12 +51,12 @@
             <form th:action="@{/actividades/reservar}" method="post"
                 th:if="${actividad.estado == 'Disponible' && actividad.reservas.?[usuario.username == #authentication.name].size() == 0}">
                 <input type="hidden" name="actividadId" th:value="${actividad.id}" />
-                <button type="submit">✅ Apuntarme</button>
+                <button type="submit">Apuntarme</button>
             </form>
             <form th:action="@{/actividades/desapuntarse}" method="post"
                 th:if="${actividad.reservas.?[usuario.username == #authentication.name].size() > 0}">
                 <input type="hidden" name="actividadId" th:value="${actividad.id}" />
-                <button type="submit" style="background-color: #e74c3c;">❌ Desapuntarse</button>
+                <button type="submit" >Desapuntarse</button>
             </form>
         </div>
         
@@ -89,7 +89,7 @@
         </div>
 
 
-        <a th:href="@{/actividades}">⬅ Volver al listado</a>
+        <a th:href="@{/actividades}" id="volver">⬅ Volver al listado</a>
     </div>
 </body>
 

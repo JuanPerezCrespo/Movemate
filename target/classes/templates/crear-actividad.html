@@ -15,7 +15,7 @@
 <div class="content">
     <h1>Crear nueva actividad</h1>
 
-    <form th:action="@{/actividades/guardar}" th:object="${actividad}" method="post" enctype="multipart/form-data">
+    <form th:action="@{/actividades/guardar}" th:object="${actividad}" method="post" enctype="multipart/form-data" id="crearActividadForm">
         <label>Monitor asignado:</label>
         <input type="text" th:field="*{monitor.nombre}" placeholder="Escribe el nombre del monitor que imparte la actividad" required />
         
@@ -42,7 +42,7 @@
         </label></p>
 
         <label for="direccion">Dirección:</label>
-        <input type="text" th:field="*{direccion}" placeholder="Escribe la dirección de la actividad" required /><br/>
+        <input type="text" th:field="*{direccion}" placeholder="Escribe la dirección de la actividad" required />
     
         <label>Fecha y hora:</label>
         <input type="datetime-local" th:field="*{fecha}" min="1000-01-01T00:00" max="9999-12-31T23:59" />
@@ -60,12 +60,12 @@
         <label>Imagen:</label>
         <input type="file" name="imagen" accept="image/*" />
     
-        <button type="submit">Guardar actividad</button>
+        <button type="submit" id="guardarActividad">Guardar actividad</button>
 
     </form>
     
 
-    <a th:href="@{/actividades}">⬅ Volver a la lista</a>
+    <a th:href="@{/actividades}" id="volver">⬅ Volver a la lista</a>
 </div>
 
 </body>

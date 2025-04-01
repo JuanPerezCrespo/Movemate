@@ -23,7 +23,7 @@ h1 {
 }
 
 /* Estilo del formulario */
-form {
+#crearActividadForm{
     display: flex;
     flex-direction: column;
     gap: 15px; /* Espaciado entre los elementos */
@@ -53,7 +53,7 @@ form input:focus, form textarea:focus, form select:focus {
 }
 
 /* Botón de guardar */
-button {
+#guardarActividad {
     padding: 10px 20px;
     background-color: #1e3a8a; /* Azul oscuro */
     color: white;
@@ -65,12 +65,12 @@ button {
     transition: background-color 0.3s ease;
 }
 
-button:hover {
+#guardarActividad:hover {
     background-color: #3b82f6; /* Azul claro */
 }
 
 /* Enlace de volver */
-a {
+#volver {
     display: inline-block;
     margin-top: 15px;
     text-decoration: none;
@@ -79,6 +79,6 @@ a {
     transition: color 0.3s ease;
 }
 
-a:hover {
+#volver:hover {
     color: #3b82f6; /* Azul claro */
 }
