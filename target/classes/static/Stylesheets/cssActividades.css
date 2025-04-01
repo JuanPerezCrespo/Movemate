@@ -4,28 +4,22 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f4f9;
-    /* Fondo gris claro */
     color: #333;
-    /* Color del texto */
 }
 
 h1 {
     text-align: center;
     color: black;
-    /* Verde suave */
     margin-bottom: 20px;
 }
 
-/* Contenedor principal */
 #contenido {
     margin: 10px;
     padding: 20px;
     background-color: #fff;
-    /* Fondo blanco */
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    /* Sombra ligera */
-    margin-left: 240px;
+    margin-left: 200px;
 }
 
 /* Botones de filtro */

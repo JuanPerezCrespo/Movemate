@@ -38,6 +38,7 @@ div ul {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 55%;
     height: fit-content;
+    font-size: 14px;
 }
 
 .user-activities, #contenido-monitor{
@@ -58,6 +59,7 @@ div ul {
     display: flex; /* Flexbox para alinear elementos */
     flex-direction: column; /* Coloca los elementos en columna */
     width: 33%;
+    font-size: 14px;
 }
 
 .imagen-actividad{

@@ -1,0 +1,28 @@
+.content {
+    margin-left: 200px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    display: flex;
+    flex-direction: row;
+}
+
+#actividad-detalle {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+section h1 {
+    text-align: center;
+    color: #4CAF50; /* Verde suave */
+    margin-bottom: 20px;
+}
+.actividad-info {
+    display: flex;
+    flex-direction: column;
+}
+
+section div p{
+    margin : 5px;
+}
