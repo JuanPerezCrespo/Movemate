@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <title>Editar Actividad</title>
@@ -15,7 +15,8 @@
             padding: 30px;
         }
 
-        form input, form textarea {
+        form input,
+        form textarea {
             width: 100%;
             padding: 8px;
             margin: 10px 0;
@@ -43,68 +44,79 @@
         }
     </style>
 </head>
+
 <body>
 
-<!-- Sidebar -->
-<div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <!-- Sidebar -->
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
 
-<!-- Contenido principal -->
-<div class="content">
-    <h1>Editar Actividad</h1>
+    <!-- Contenido principal -->
+    <div class="content">
+        <h1>Editar Actividad</h1>
 
-    <form th:action="@{'/actividades/' + ${actividad.id} + '/editar'}" th:object="${actividad}" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="_method" value="patch" />
+        <form th:action="@{'/actividades/' + ${actividad.id} + '/editar'}" th:object="${actividad}" method="post"
+            enctype="multipart/form-data">
+            <input type="hidden" name="_method" value="patch" />
 
-        <label>Monitor asignado:</label>
-        <input type="text" th:field="*{monitor.nombre}" placeholder="Escribe el nombre del monitor" required /><br/>
-        
-        <label>Deporte:</label>
-        <select th:field="*{deporte}" required>
-            <option value="" disabled selected>Selecciona un deporte</option>
-            <option value="Fútbol">Fútbol</option>
-            <option value="Baloncesto">Baloncesto</option>
-            <option value="Tenis">Tenis</option>
-            <option value="Natación">Natación</option>
-            <option value="Ciclismo">Ciclismo</option>
-            <option value="Running">Running</option>
-        </select>
+            <label>Monitor asignado:</label>
+            <input type="text" th:field="*{monitor.nombre}" placeholder="Escribe el nombre del monitor"
+                required /><br />
 
-        <p><label>Ubicación:
-            <select th:field="*{ubicacion}" required>
-                <option value="" disabled selected>Selecciona una ubicación</option>
-                <option value="Madrid">Madrid</option>
-                <option value="Barcelona">Barcelona</option>
-                <option value="Valencia">Valencia</option>
-                <option value="Sevilla">Sevilla</option>
-                <option value="Zaragoza">Zaragoza</option>
-                <option value="Málaga">Málaga</option>
+            <label>Deporte:</label>
+            <select th:field="*{deporte}" required>
+                <option value="" disabled selected>Selecciona un deporte</option>
+                <option value="Fútbol">Fútbol</option>
+                <option value="Baloncesto">Baloncesto</option>
+                <option value="Tenis">Tenis</option>
+                <option value="Natación">Natación</option>
+                <option value="Ciclismo">Ciclismo</option>
+                <option value="Running">Running</option>
             </select>
-        </label></p>
+            <label>Nivel de la actividad</label>
+            <select th:field="*{nivel}" required>
+                <option value="" disabled selected>Selecciona un nivel</option>
+                <option value="Principiante">Principiante</option>
+                <option value="Intermedio">Intermedio</option>
+                <option value="Avanzado">Avanzado</option>
+            </select>
+            <p><label>Ubicación:
+                    <select th:field="*{ubicacion}" required>
+                        <option value="" disabled selected>Selecciona una ubicación</option>
+                        <option value="Madrid">Madrid</option>
+                        <option value="Barcelona">Barcelona</option>
+                        <option value="Valencia">Valencia</option>
+                        <option value="Sevilla">Sevilla</option>
+                        <option value="Zaragoza">Zaragoza</option>
+                        <option value="Málaga">Málaga</option>
+                    </select>
+                </label></p>
 
-        <label for="direccion">Dirección:</label>
-        <input type="text" th:field="*{direccion}" placeholder="Escribe la dirección de la actividad" required /><br/>
-    
-        <label>Fecha y hora:</label>
-        <input type="datetime-local" th:field="*{fecha}" min="1000-01-01T00:00" max="9999-12-31T23:59" />
-    
-        <label>Precio:</label>
-        <input type="number" step="0.01" th:field="*{precio}" />
+            <label for="direccion">Dirección:</label>
+            <input type="text" th:field="*{direccion}" placeholder="Escribe la dirección de la actividad"
+                required /><br />
 
-        <label>Máximo de Participantes:</label>
-        <input type="number" th:field="*{maxParticipantes}" min="1" required />
-    
-        <label>Descripción:</label>
-        <textarea th:field="*{descripcion}"></textarea>
-    
-        <!-- Campo para subir nueva imagen -->
-        <label>Imagen:</label>
-        <input type="file" name="imagen" accept="image/*" />
-    
-        <button type="submit">Guardar cambios</button>
-    </form>
-    
-    <a th:href="@{/actividades}">⬅ Volver a la lista</a>
-</div>
+            <label>Fecha y hora:</label>
+            <input type="datetime-local" th:field="*{fecha}" min="1000-01-01T00:00" max="9999-12-31T23:59" />
+
+            <label>Precio:</label>
+            <input type="number" step="0.01" th:field="*{precio}" />
+
+            <label>Máximo de Participantes:</label>
+            <input type="number" th:field="*{maxParticipantes}" min="1" required />
+
+            <label>Descripción:</label>
+            <textarea th:field="*{descripcion}"></textarea>
+
+            <!-- Campo para subir nueva imagen -->
+            <label>Imagen:</label>
+            <input type="file" name="imagen" accept="image/*" />
+
+            <button type="submit">Guardar cambios</button>
+        </form>
+
+        <a th:href="@{/actividades}">⬅ Volver a la lista</a>
+    </div>
 
 </body>
+
 </html>

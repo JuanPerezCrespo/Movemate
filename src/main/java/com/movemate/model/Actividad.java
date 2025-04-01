@@ -1,10 +1,18 @@
 package com.movemate.model;
 
-import jakarta.persistence.*;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Actividad {
@@ -12,22 +20,20 @@ public class Actividad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String deporte;
     private String ubicacion;
-    private String direccion; //Dirección para geocodificación
+    private String direccion; // Dirección para geocodificación
     private Double latitud;
     private Double longitud;
-    
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    private LocalDateTime fecha;
-
+    private String nivel;
     private double precio;
     private int participantes;
     private String descripcion;
     private String imagenUrl;
-
     private int maxParticipantes;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime fecha;
+    private String estado = "Disponible"; // NUEVO CAMPO
 
     public int getMaxParticipantes() {
         return maxParticipantes;
@@ -37,15 +43,12 @@ public class Actividad {
         this.maxParticipantes = maxParticipantes;
     }
 
-    private String estado = "Disponible"; // NUEVO CAMPO
-
     @ManyToOne
     @JoinColumn(name = "monitor_id")
     private Monitor monitor;
 
     @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL)
     private List<Reserva> reservas;
-
 
     // Getters y Setters
 
@@ -159,6 +162,14 @@ public class Actividad {
 
     public void setImagenUrl(String imagenUrl) {
         this.imagenUrl = imagenUrl;
+    }
+
+    public String getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(String nivel) {
+        this.nivel = nivel;
     }
 
 }

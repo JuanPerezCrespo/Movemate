@@ -57,6 +57,7 @@ public String listarActividades(
         @RequestParam(required = false) Double maxPrice,
         @RequestParam(required = false) String ubicacion,
         @RequestParam(required = false) String deporte,
+        @RequestParam(required = false) String nivel, // Nuevo parámetro para filtrar por nivel
         Model model) {
     LocalDateTime fechaActual = LocalDateTime.now();
 
@@ -74,6 +75,7 @@ public String listarActividades(
             .filter(a -> maxPrice == null || a.getPrecio() <= maxPrice) // Filtrar por precio máximo
             .filter(a -> ubicacion == null || ubicacion.isEmpty() || ubicacion.equalsIgnoreCase(a.getUbicacion())) // Filtrar por ubicación
             .filter(a -> deporte == null || deporte.isEmpty() || deporte.equalsIgnoreCase(a.getDeporte())) // Filtrar por deporte
+            .filter(a -> nivel == null || nivel.isEmpty() || nivel.equalsIgnoreCase(a.getNivel())) // Filtrar por nivel
             .toList();
 
     // Pasar los filtros y actividades al modelo
@@ -81,6 +83,7 @@ public String listarActividades(
     model.addAttribute("mostrar", mostrar);
     model.addAttribute("ubicacion", ubicacion);
     model.addAttribute("deporte", deporte);
+    model.addAttribute("nivel", nivel); // Pasar el nivel seleccionado al modelo
     model.addAttribute("minPrice", minPrice);
     model.addAttribute("maxPrice", maxPrice);
     model.addAttribute("fechaActual", fechaActual);

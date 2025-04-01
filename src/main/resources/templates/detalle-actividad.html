@@ -22,6 +22,7 @@
                 <p><strong>Precio:</strong> <span th:text="${actividad.precio}"></span> €</p>
                 <p><strong>Participantes:</strong> <span
                         th:text="${actividad.participantes}+'/'+${actividad.maxParticipantes}"></span></p>
+                <p><strong>Nivel:</strong> <span th:text="${actividad.nivel}"></span></p> <!-- Nuevo campo para el nivel -->
                 <p><strong>Descripción:</strong> <span th:text="${actividad.descripcion}"></span></p>
                 <p><strong>Monitor:</strong> <span th:text="${actividad.monitor?.nombre ?: 'No asignado'}"></span></p>
             </div>
