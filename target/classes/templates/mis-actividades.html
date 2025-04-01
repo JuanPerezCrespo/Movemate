@@ -10,8 +10,7 @@
 <body>
     <div th:replace="fragments/sidebar :: sidebar"></div>
 
-    <div class="content">
-        <h1>📋 Mis Actividades</h1>
+    <div id="content">
         <div th:if="${tipo == 'cliente'}">
             <div id="contenido-cliente">
                 <div class="user-info">
@@ -41,39 +40,61 @@
                     </form>
                 </div>
                 <div class="user-activities">
-                    <h2>Actividades reservadas</h2>
-                    <div th:each="reserva : ${reservas}" class="actividad">
-                        <img th:src="@{${reserva.actividad.imagenUrl}}" alt="Imagen de la actividad"
-                            class="card-img-top" onerror="this.src='/images/default.jpg'">
-                        <p><strong>Deporte:</strong> <span th:text="${reserva.actividad.deporte}"></span></p>
-                        <ul>
-                            <li>
-                                <p><strong>Fecha:</strong> <span th:text="${#temporals.format(reserva.actividad.fecha, 'dd/MM/yyyy HH:mm')}"></span></p>
-                            </li>
-                            <li>
-                                <p><strong>Ubicación:</strong> <span th:text="${reserva.actividad.ubicacion}"></span>
-                                </p>
-                            </li>
-                            <li>
-                                <strong> <a th:href="@{'/actividades/' + ${reserva.actividad.id}}">Ver detalle de la
-                                        actividad</a></strong>
-                            </li>
-                        </ul>
-                    </div>
+                    <h2 style="text-align: center;">Mis actividades reservadas</h2>
+                    <section style="display: flex; flex-direction: row;">
+                        <div th:each="reserva : ${reservas}" class="actividad">
+                            <img th:src="@{${reserva.actividad.imagenUrl}}" alt="Imagen de la actividad"
+                                class="imagen-actividad" onerror="this.src='/images/default.jpg'">
+                            <p style="margin-bottom: 0px;"><strong>Deporte:</strong> <span
+                                    th:text="${reserva.actividad.deporte}"></span></p>
+                            <ul style="margin-bottom: 0px; margin-top: 0px;">
+                                <li>
+                                    <p><strong>Fecha:</strong> <span
+                                            th:text="${#temporals.format(reserva.actividad.fecha, 'dd/MM/yyyy HH:mm')}"></span>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p><strong>Ubicación:</strong> <span
+                                            th:text="${reserva.actividad.ubicacion}"></span>
+                                    </p>
+                                </li>
+                                <li>
+                                    <strong> <a th:href="@{'/actividades/' + ${reserva.actividad.id}}">Ver detalle de la
+                                            actividad</a></strong>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
                 </div>
             </div>
         </div>
 
-        <div th:if="${tipo == 'monitor'}">
-            <h2>Actividades creadas</h2>
-            <ul>
-                <li th:each="actividad : ${actividades}">
-                    <span th:text="${actividad.deporte}"></span> -
-                    <span th:text="${actividad.fecha}"></span> en
-                    <span th:text="${actividad.ubicacion}"></span>
-                    (<a th:href="@{'/actividades/' + ${actividad.id}}">Ver detalle</a>)
-                </li>
-            </ul>
+        <div th:if="${tipo == 'monitor'}" id="contenido-monitor">
+            <h2 style="text-align: center;">Mis actividades creadas</h2>
+            <section style="display: flex; flex-direction: row;">
+                <div th:each="actividad : ${actividades}" class="actividades-monitor">
+                    <img th:src="@{${actividad.imagenUrl}}" alt="Imagen de la actividad"
+                                class="imagen-actividad" onerror="this.src='/images/default.jpg'">
+                    <p style="margin-bottom: 0px;"><strong>Deporte:</strong> <span
+                            th:text="${actividad.deporte}"></span></p>
+                    <ul style="margin-bottom: 0px; margin-top: 0px;">
+                        <li>
+                            <p><strong>Fecha:</strong> <span
+                                    th:text="${#temporals.format(actividad.fecha, 'dd/MM/yyyy HH:mm')}"></span>
+                            </p>
+                        </li>
+                        <li>
+                            <p><strong>Ubicación:</strong> <span
+                                    th:text="${actividad.ubicacion}"></span>
+                            </p>
+                        </li>
+                        <li>
+                            <strong> <a th:href="@{'/actividades/' + ${actividad.id}}">Ver detalle de la
+                                    actividad</a></strong>
+                        </li>
+                    </ul>
+                </div>
+            </section>
         </div>
 
         <a th:href="@{/}">⬅ Volver al inicio</a>

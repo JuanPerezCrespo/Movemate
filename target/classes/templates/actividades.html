@@ -9,48 +9,44 @@
 
 <body>
 
-    <!-- Sidebar -->
-    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <div th:replace="fragments/sidebar :: sidebar"></div>
 
-    <!-- Contenido principal -->
     <div id="contenido" th:fragment="content">
         <h1>Actividades disponibles</h1>
 
-        <!-- Botones de filtro -->
-        <div class="mb-4">
-            <a class="btn btn-outline-primary" th:href="@{/actividades(mostrar='futuras')}"
+        <!--Botones para filtar-->
+        <div id="botones">
+            <a class="boton" th:href="@{/actividades(mostrar='futuras')}"
                 th:classappend="${mostrar} == 'futuras' ? 'active' : ''">
                 Próximas Actividades
             </a>
-            <a class="btn btn-outline-secondary" th:href="@{/actividades(mostrar='todas')}"
+            <a class="boton" th:href="@{/actividades(mostrar='todas')}"
                 th:classappend="${mostrar} == 'todas' or mostrar == null ? 'active' : ''">
                 Todas
             </a>
-            <a class="btn btn-outline-warning" th:href="@{/actividades(mostrar='pasadas')}"
+            <a class="boton" th:href="@{/actividades(mostrar='pasadas')}"
                 th:classappend="${mostrar} == 'pasadas' ? 'active' : ''">
                 Pasadas
             </a>
         </div>
 
-        <!-- Tarjetas de actividades -->
-        <div id="actividades">
-            <div th:each="actividad : ${actividades}">
-                <div class="card"
-                    th:classappend="${actividad.estado == 'Cancelada'} ? ' bg-light text-muted border-secondary' : ''">
-                    <img th:src="${actividad.imagenUrl}" class="card-img-top" alt="Imagen de actividad"
-                        onerror="this.src='/images/default.jpg'" />
-                    <div class="card-body">
-                        <span class="badge" th:if="${actividad.estado == 'Cancelada'}">Cancelada</span>
-                        <h5 class="card-title" th:text="${actividad.deporte}">Deporte</h5>
-                        <p><strong>Ubicación:</strong> <span th:text="${actividad.ubicacion}">Ubicación</span></p>
-                        <p><strong>Fecha:</strong> <span
-                                th:text="${#temporals.format(actividad.fecha, 'dd/MM/yyyy HH:mm')}">Fecha</span></p>
-                        <p><strong>Precio:</strong> <span th:text="${actividad.precio}">0</span> €</p>
-                        <a class="btn" th:href="@{'/actividades/' + ${actividad.id}}">Más detalles</a>
-                    </div>
+        <section id="actividades">
+            <div th:each="actividad : ${actividades}" class="actividad">
+                <img th:src="${actividad.imagenUrl}" class="imagen-actividad" alt="Imagen de actividad"
+                    onerror="this.src='/images/default.jpg'" />
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${actividad.deporte}">Deporte</h5>
+                    <p><strong>Ubicación:</strong> <span th:text="${actividad.ubicacion}">Ubicación</span></p>
+                    <p><strong>Fecha:</strong> <span
+                            th:text="${#temporals.format(actividad.fecha, 'dd/MM/yyyy HH:mm')}">Fecha</span></p>
+                    <p><strong>Precio:</strong> <span th:text="${actividad.precio}">0</span> €</p>
+                    <span class="badge" th:if="${actividad.estado == 'Cancelada'}">Cancelada</span>
+
+                    <a class="btn" th:href="@{'/actividades/' + ${actividad.id}}">Más detalles</a>
                 </div>
             </div>
-        </div>
+
+        </section>
     </div>
 
 </body>

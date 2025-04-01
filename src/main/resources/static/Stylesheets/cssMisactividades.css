@@ -13,9 +13,54 @@ h1 {
     margin-bottom: 20px;
 }
 
-.content{
-    margin-left: 240px;
+#content{
+    margin-left: 200px;
+    margin-right: 18px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+#contenido-cliente{
+    display: flex;
+    gap: 20px;
+}
+div h2 {
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+div ul {
+    padding-left: 10%;
+}
+.user-info {
+    background-color: #e8f5e9; /* Fondo verde claro */
+    border: 1px solid #c8e6c9; /* Borde verde */
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 55%;
+    height: fit-content;
 }
 
+.user-activities, #contenido-monitor{
+    background-color: #fffde7; /* Fondo amarillo claro */
+    border: 1px solid #fff9c4; /* Borde amarillo */
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+}
 
+.actividad , .actividades-monitor{
+    background-color: #fbc02d; /* Fondo amarillo */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    padding: 10px; /* Espaciado interno */
+    margin: 10px 10px; /* Espaciado vertical entre filas */
+    display: flex; /* Flexbox para alinear elementos */
+    flex-direction: column; /* Coloca los elementos en columna */
+    width: 33%;
+}
 
+.imagen-actividad{
+    object-fit: contain; /* Mantiene la proporción de la imagen */
+    width: 100%; /* Ancho completo del contenedor */
+}
