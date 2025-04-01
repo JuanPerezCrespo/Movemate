@@ -79,7 +79,7 @@ public class ActividadController {
 
     @GetMapping("/actividades/nueva")
     public String mostrarFormulario(Model model) {
-        model.addAttribute("actividad", new Actividad());
+        model.addAttribute("actividad", new Actividad());   // Crear un nuevo objeto Actividad para el formulario
         return "crear-actividad";
     }
 
