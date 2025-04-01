@@ -111,13 +111,23 @@ public class ActividadController {
     }
 
     @GetMapping("/actividades/{id}")
-    public String verActividad(@PathVariable Long id, Model model) {
+    public String verActividad(@PathVariable Long id, Authentication auth, Model model) {
         Optional<Actividad> actividadOpt = actividadRepository.findById(id);
     
         if (actividadOpt.isPresent()) {
             Actividad actividad = actividadOpt.get();
             model.addAttribute("actividad", actividad);
-            model.addAttribute("monitor", actividad.getMonitor()); // Asegúrate de pasar el monitor al modelo
+
+            // Verificar si el usuario está apuntado
+            String username = auth.getName();
+            Usuario usuario = usuarioRepository.findByUsername(username).orElse(null);
+            boolean usuarioReservado = false;
+
+            if (usuario instanceof Cliente cliente) {
+                usuarioReservado = reservaRepository.existsByUsuarioAndActividad(cliente, actividad);
+            }
+
+            model.addAttribute("usuarioReservado", usuarioReservado);
             return "detalle-actividad";
         } else {
             return "redirect:/actividades";
