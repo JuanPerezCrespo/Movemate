@@ -2,7 +2,10 @@ package com.movemate.controller;
 
 import com.movemate.model.*;
 import com.movemate.repository.*;
+import com.movemate.service.GeocodingService;
+import com.movemate.service.ActividadService;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,8 +17,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller // Indica que esta clase es un controlador de Spring, lo que permite manejar las
             // peticiones HTTP.
@@ -24,15 +30,21 @@ public class ActividadController {
     private final ActividadRepository actividadRepository; // Repositorio para acceder a las actividades
     private final UsuarioRepository usuarioRepository; // Repositorio para acceder a los usuarios
     private final ReservaRepository reservaRepository; // Repositorio para acceder a las reservas
+    private final GeocodingService geocodingService;
+    private final ActividadService actividadService;
 
     // Constructor que inyecta las dependencias necesarias para el controlador.
     public ActividadController(
             ActividadRepository actividadRepository,
             UsuarioRepository usuarioRepository,
-            ReservaRepository reservaRepository) {
+            ReservaRepository reservaRepository,
+            ActividadService actividadService,
+            GeocodingService geocodingService) {
         this.actividadRepository = actividadRepository;
         this.usuarioRepository = usuarioRepository;
         this.reservaRepository = reservaRepository;
+        this.geocodingService = geocodingService;
+        this.actividadService = actividadService;
     }
 
     // Método que maneja la petición GET para listar actividades.
@@ -76,6 +88,11 @@ public class ActividadController {
             @RequestParam("imagen") MultipartFile imagen,
             Authentication auth) {
 
+        // Validar que el atributo deporte no sea nulo o vacío
+        if (actividad.getDeporte() == null || actividad.getDeporte().isEmpty()) {
+            throw new IllegalArgumentException("El campo 'deporte' es obligatorio.");
+        }
+
         String username = auth.getName();
         Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(username);
 
@@ -106,7 +123,15 @@ public class ActividadController {
             actividad.setImagenUrl("/images/default.jpg");
         }
 
-        actividadRepository.save(actividad);
+        // Obtener coordenadas de la dirección ingresada
+        if (actividad.getDireccion() != null && !actividad.getDireccion().isEmpty()) {
+            double[] coordenadas = geocodingService.obtenerCoordenadas(actividad.getDireccion());
+            actividad.setLatitud(coordenadas[0]);
+            actividad.setLongitud(coordenadas[1]);
+        }
+
+        // 🔹 Guardar la actividad con coordenadas automáticas
+        actividadService.guardarActividad(actividad);
         return "redirect:/actividades";
     }
 
@@ -333,5 +358,25 @@ public class ActividadController {
             }
         }
         return "redirect:/actividades";
+    }
+
+    @GetMapping("/actividades/ubicaciones")
+    @ResponseBody
+    public ResponseEntity<List<Map<String, Object>>> obtenerActividadesConUbicacion() {
+        List<Actividad> actividades = actividadRepository.findAll(); // Obtener todas las actividades
+
+        List<Map<String, Object>> respuesta = actividades.stream()
+            .filter(act -> act.getLatitud() != null && act.getLongitud() != null) // Evitar actividades sin coordenadas
+            .map(act -> {
+                Map<String, Object> actividad = new HashMap<>();
+                actividad.put("id", act.getId());
+                actividad.put("deporte", act.getDeporte());
+                actividad.put("latitud", act.getLatitud());
+                actividad.put("longitud", act.getLongitud());
+                return actividad;
+            })
+            .collect(Collectors.toList());
+
+        return ResponseEntity.ok(respuesta);
     }
 }

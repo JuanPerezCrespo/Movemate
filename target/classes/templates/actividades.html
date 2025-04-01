@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <title>Actividades disponibles</title>
     <link rel="stylesheet" href="/Stylesheets/cssActividades.css">
+
+    <!-- Leaflet CSS (mapa)-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 
 <body>
@@ -30,6 +33,9 @@
             </a>
         </div>
 
+        <!-- Mapa de Leaflet -->
+        <div id="map" style="width: 100%; height: 500px; margin-bottom: 20px;"></div>
+
         <section id="actividades">
             <div th:each="actividad : ${actividades}" class="actividad">
                 <img th:src="${actividad.imagenUrl}" class="imagen-actividad" alt="Imagen de actividad"
@@ -48,6 +54,35 @@
 
         </section>
     </div>
+        
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Crear el mapa centrado en una ubicación inicial (Madrid como ejemplo)
+            var map = L.map('map').setView([40.4168, -3.7038], 12);
+    
+            // Añadir mapa base de OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+    
+            // Cargar actividades desde el servidor
+            fetch('/actividades/ubicaciones')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(function (actividad) {
+                        if (actividad.latitud && actividad.longitud) {
+                            L.marker([actividad.latitud, actividad.longitud])
+                                .addTo(map)
+                                .bindPopup(`<b>${actividad.nombre}</b><br><a href='/actividades/${actividad.id}'>Ver más</a>`);
+                        }
+                    });
+                })
+                .catch(error => console.error('Error al cargar las actividades:', error));
+        });
+    </script>
 
 </body>
 
