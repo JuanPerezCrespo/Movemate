@@ -1,0 +1,51 @@
+.content {
+    margin-left: 200px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+#actividad-detalle {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    width: fit-content;
+}
+
+section h1 {
+    text-align: center;
+    color: #4CAF50;
+    /* Verde suave */
+    margin-bottom: 20px;
+}
+
+.actividad-info {
+    display: flex;
+    flex-direction: column;
+}
+
+section div p {
+    margin: 5px;
+}
+
+#actividad-cliente {
+    display: flex;
+    flex-direction: column;
+    background-color:#f9f9f9;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: fit-content;
+    padding: 20px;
+    padding-top: 0px;
+    margin: 20px;
+}
+
+#botones {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    margin-top: 20px;
+    width: fit-content;
+    gap: 10px;
+}

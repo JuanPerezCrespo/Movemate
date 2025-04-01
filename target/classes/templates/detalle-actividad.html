@@ -1,79 +1,42 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <title>Detalle de Actividad</title>
-    <style>
-        .content {
-            margin-left: 220px;
-            padding: 20px;
-            font-family: Arial, sans-serif;
-        }
-
-        h1, h3 {
-            color: #2c3e50;
-        }
-
-        ul {
-            list-style: disc;
-            padding-left: 20px;
-        }
-
-        p {
-            margin: 10px 0;
-        }
-
-        a {
-            display: inline-block;
-            margin-top: 20px;
-            text-decoration: none;
-            color: #2980b9;
-        }
-
-        button {
-            margin-top: 15px;
-            padding: 8px 16px;
-            background-color: #27ae60;
-            border: none;
-            color: white;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #2ecc71;
-        }
-    </style>
+    <link rel="stylesheet" href="/Stylesheets/cssDetalleActividad.css">
 </head>
-<body>
+
+<body style="margin: 0px;">
     <div th:replace="fragments/sidebar :: sidebar"></div>
 
     <div class="content">
-        <h1>Detalle de la Actividad</h1>
+        <section id="actividad-detalle">
+            <h1>Detalles de la Actividad</h1>
+            <div class="actividad-info">
+                <p><strong>Deporte:</strong> <span th:text="${actividad.deporte}"></span></p>
+                <p><strong>Ubicación:</strong> <span th:text="${actividad.ubicacion}"></span></p>
+                <p><strong>Fecha y hora:</strong> <span
+                        th:text="${#temporals.format(actividad.fecha, 'dd/MM/yyyy HH:mm')}"></span></p>
+                <p><strong>Precio:</strong> <span th:text="${actividad.precio}"></span> €</p>
+                <p><strong>Participantes:</strong> <span
+                        th:text="${actividad.participantes}+'/'+${actividad.maxParticipantes}"></span></p>
+                <p><strong>Descripción:</strong> <span th:text="${actividad.descripcion}"></span></p>
+                <p><strong>Monitor:</strong> <span th:text="${actividad.monitor?.nombre ?: 'No asignado'}"></span></p>
+                <p><strong>Estado:</strong> <span th:text="${actividad.estado}"></span></p>
+            </div>
+            <div th:if="${actividad.reservas}">
+                <h3>Participantes inscritos:</h3>
+                <ul>
+                    <li th:each="reserva : ${actividad.reservas}"
+                        th:text="${reserva.usuario?.nombre ?: 'Usuario sin nombre'}"></li>
+                </ul>
+            </div>
+        </section>
 
-        <p><strong>Deporte:</strong> <span th:text="${actividad.deporte}"></span></p>
-        <p><strong>Ubicación:</strong> <span th:text="${actividad.ubicacion}"></span></p>
-        <p><strong>Fecha y hora:</strong> <span th:text="${#temporals.format(actividad.fecha, 'dd/MM/yyyy HH:mm')}"></span></p>
-        <p><strong>Precio:</strong> <span th:text="${actividad.precio}"></span> €</p>
-        <p><strong>Participantes:</strong> <span th:text="${actividad.participantes}+'/'+${actividad.maxParticipantes}"></span></p>
-        <p><strong>Descripción:</strong> <span th:text="${actividad.descripcion}"></span></p>
-        <p><strong>Monitor:</strong> <span th:text="${actividad.monitor?.nombre ?: 'No asignado'}"></span></p>
-        <p><strong>Estado:</strong> <span th:text="${actividad.estado}"></span></p>
 
-        <div th:if="${actividad.reservas}">
-            <h3>Participantes inscritos:</h3>
-            <ul>
-                <li th:each="reserva : ${actividad.reservas}"
-                    th:text="${reserva.usuario?.nombre ?: 'Usuario sin nombre'}"></li>
-            </ul>
-        </div>
+        <div sec:authorize="hasRole('CLIENTE')" id="actividad-cliente">
 
-        <div sec:authorize="hasRole('CLIENTE')">
-            <form th:action="@{/actividades/reservar}" method="post"
-                th:if="${actividad.estado == 'Disponible' && actividad.reservas.?[usuario.username == #authentication.name].size() == 0}">
-                <input type="hidden" name="actividadId" th:value="${actividad.id}" />
-                <button type="submit">✅ Apuntarme</button>
-            </form>
             <p th:if="${actividad.estado == 'Completa'}" style="color: red;">
                 🚫 Esta actividad está completa. No se aceptan más inscripciones.
             </p>
@@ -83,43 +46,49 @@
             </p>
 
             <p>Estado actual: <b th:text="${actividad.estado}">?</b></p>
-        
-            <!-- Mostrar botón de desapuntarse solo si el usuario ya está inscrito -->
+            <form th:action="@{/actividades/reservar}" method="post"
+                th:if="${actividad.estado == 'Disponible' && actividad.reservas.?[usuario.username == #authentication.name].size() == 0}">
+                <input type="hidden" name="actividadId" th:value="${actividad.id}" />
+                <button type="submit">✅ Apuntarme</button>
+            </form>
             <form th:action="@{/actividades/desapuntarse}" method="post"
-                  th:if="${actividad.reservas.?[usuario.username == #authentication.name].size() > 0}">
+                th:if="${actividad.reservas.?[usuario.username == #authentication.name].size() > 0}">
                 <input type="hidden" name="actividadId" th:value="${actividad.id}" />
                 <button type="submit" style="background-color: #e74c3c;">❌ Desapuntarse</button>
             </form>
-
         </div>
-        <form th:action="@{/actividades/{id}/cancelar(id=${actividad.id})}" method="post"
+        
+        <div id="botones">
+            <form th:action="@{/actividades/{id}/cancelar(id=${actividad.id})}" method="post"
             th:if="${#authentication.name == actividad.monitor.username and actividad.estado != 'Cancelada'}">
             <button type="submit" class="btn btn-danger mt-3">
                 ❌ Cancelar actividad
             </button>
         </form>
-        <form th:action="@{'/actividades/' + ${actividad.id} + '/habilitar'}" method="post" 
-                th:if="${#authentication.name == actividad.monitor.username and actividad.estado == 'Cancelada'}">
-                <button type="submit" class="btn btn-success mt-3">
-                    ✅ Habilitar Actividad
-                </button>
+        <form th:action="@{'/actividades/' + ${actividad.id} + '/habilitar'}" method="post"
+            th:if="${#authentication.name == actividad.monitor.username and actividad.estado == 'Cancelada'}">
+            <button type="submit" class="btn btn-success mt-3">
+                ✅ Habilitar Actividad
+            </button>
         </form>
-        <form th:action="@{'/actividades/' + ${actividad.id} + '/eliminar'}" method="post" 
-                th:if="${#authentication.name == actividad.monitor.username}">
-                <button type="submit" class="btn btn-danger mt-3"
-                        onclick="return confirm('¿Estás seguro de que deseas eliminar esta actividad?');">
-                    🗑️ Eliminar Actividad
-                </button>
+        <form th:action="@{'/actividades/' + ${actividad.id} + '/eliminar'}" method="post"
+            th:if="${#authentication.name == actividad.monitor.username}">
+            <button type="submit" class="btn btn-danger mt-3"
+                onclick="return confirm('¿Estás seguro de que deseas eliminar esta actividad?');">
+                🗑️ Eliminar Actividad
+            </button>
         </form>
-        <form th:action="@{'/actividades/' + ${actividad.id} + '/editar'}" method="get" 
-                th:if="${#authentication.name == actividad.monitor.username}">
-                <button type="submit" class="btn btn-primary mt-3">
-                    ✏️ Editar Actividad
-                </button>
+        <form th:action="@{'/actividades/' + ${actividad.id} + '/editar'}" method="get"
+            th:if="${#authentication.name == actividad.monitor.username}">
+            <button type="submit" class="btn btn-primary mt-3">
+                ✏️ Editar Actividad
+            </button>
         </form>
-        
+        </div>
+
 
         <a th:href="@{/actividades}">⬅ Volver al listado</a>
     </div>
 </body>
+
 </html>
