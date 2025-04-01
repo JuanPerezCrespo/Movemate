@@ -113,9 +113,11 @@ public class ActividadController {
     @GetMapping("/actividades/{id}")
     public String verActividad(@PathVariable Long id, Model model) {
         Optional<Actividad> actividadOpt = actividadRepository.findById(id);
-
+    
         if (actividadOpt.isPresent()) {
-            model.addAttribute("actividad", actividadOpt.get());
+            Actividad actividad = actividadOpt.get();
+            model.addAttribute("actividad", actividad);
+            model.addAttribute("monitor", actividad.getMonitor()); // Asegúrate de pasar el monitor al modelo
             return "detalle-actividad";
         } else {
             return "redirect:/actividades";

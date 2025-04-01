@@ -53,9 +53,11 @@
     <h1>Crear nueva actividad</h1>
 
     <label>Monitor asignado:</label>
-    <input type="text" th:value="${#authentication.name}" readonly /><br/>
 
     <form th:action="@{/actividades/guardar}" th:object="${actividad}" method="post" enctype="multipart/form-data">
+        <label>Monitor asignado:</label>
+        <input type="text" th:field="*{monitor.nombre}" placeholder="Escribe el nombre del monitor" required /><br/>
+        
         <label>Deporte:</label>
         <input type="text" th:field="*{deporte}" />
     

@@ -52,12 +52,12 @@
 <div class="content">
     <h1>Editar Actividad</h1>
 
-    <label>Monitor asignado:</label>
-    <input type="text" th:value="${#authentication.name}" readonly /><br/>
-
     <form th:action="@{'/actividades/' + ${actividad.id} + '/editar'}" th:object="${actividad}" method="post" enctype="multipart/form-data">
         <input type="hidden" name="_method" value="patch" />
 
+        <label>Monitor asignado:</label>
+        <input type="text" th:field="*{monitor.nombre}" placeholder="Escribe el nombre del monitor" required /><br/>
+        
         <label>Deporte:</label>
         <input type="text" th:field="*{deporte}" />
     
