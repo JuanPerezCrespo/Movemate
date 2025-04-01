@@ -4,103 +4,139 @@
     <meta charset="UTF-8">
     <title>Registro de Usuario</title>
     <style>
+        /* Estilo general */
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9; /* Fondo claro */
+            display: flex;
+            align-items: flex-start; /* Alinea el contenido al inicio */
+            justify-content: center;
+            min-height: 100vh; /* Asegura que el cuerpo ocupe al menos toda la altura de la ventana */
+        }
+
+        .registro-container {
+            background: white;
             padding: 40px;
-            max-width: 600px;
-            margin: 0 auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra elegante */
+            width: 100%;
+            max-width: 500px; /* Ancho máximo */
+            text-align: center;
+            margin-top: 20px; /* Espaciado superior */
+            margin-bottom: 20px; /* Espaciado inferior */
         }
 
         h1 {
-            text-align: center;
-            color: #1e3a8a;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
+            margin-bottom: 20px;
+            color: #1e3a8a; /* Azul oscuro */
+            font-size: 24px;
         }
 
         label {
-            margin-top: 15px;
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
             font-weight: bold;
+            color: #333;
         }
 
         input, select, textarea {
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 5px;
+            padding: 12px;
             border: 1px solid #ccc;
+            border-radius: 6px;
+            width: 100%;
+            margin-bottom: 15px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #1e3a8a; /* Azul oscuro */
+            outline: none;
+            box-shadow: 0 0 5px rgba(30, 58, 138, 0.3); /* Sombra al enfocar */
         }
 
         button {
-            margin-top: 25px;
+            width: 100%;
             padding: 12px;
-            background-color: #1e3a8a;
+            background-color: #1e3a8a; /* Azul oscuro */
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
-            font-size: 1rem;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #3b82f6;
+            background-color: #2c5282; /* Azul más claro */
         }
 
         .back-link {
-            display: inline-block;
             margin-top: 20px;
+            font-size: 14px;
+            color: #1e3a8a; /* Azul oscuro */
             text-decoration: none;
-            color: #1e3a8a;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        #deporteMonitor {
+            margin-top: 15px;
         }
     </style>
 </head>
 <body>
+<div class="registro-container">
+    <h1>📝 Registro</h1>
+    <form th:action="@{/registro}" th:object="${cliente}" method="post">
+        <label>Nombre:</label>
+        <input type="text" th:field="*{nombre}" placeholder="Introduce tu nombre" required />
 
-<h1>Registro</h1>
+        <label>Email:</label>
+        <input type="email" th:field="*{email}" placeholder="Introduce tu email" required />
 
-<form th:action="@{/registro}" th:object="${cliente}" method="post">
-    <label>Nombre:</label>
-    <input type="text" th:field="*{nombre}" required />
+        <label>Teléfono:</label>
+        <input type="text" th:field="*{telefono}" placeholder="Introduce tu teléfono" />
 
-    <label>Email:</label>
-    <input type="email" th:field="*{email}" required />
+        <label>Género:</label>
+        <select th:field="*{genero}">
+            <option value="Hombre">Hombre</option>
+            <option value="Mujer">Mujer</option>
+            <option value="Otro">Otro</option>
+        </select>
 
-    <label>Teléfono:</label>
-    <input type="text" th:field="*{telefono}" />
+        <label>Dirección:</label>
+        <input type="text" th:field="*{direccion}" placeholder="Introduce tu dirección" />
 
-    <label>Género:</label>
-    <select th:field="*{genero}">
-        <option value="Hombre">Hombre</option>
-        <option value="Mujer">Mujer</option>
-        <option value="Otro">Otro</option>
-    </select>
+        <label>Usuario:</label>
+        <input type="text" th:field="*{username}" placeholder="Introduce tu usuario" required />
 
-    <label>Dirección:</label>
-    <input type="text" th:field="*{direccion}" />
+        <label>Contraseña:</label>
+        <input type="password" th:field="*{password}" placeholder="Introduce tu contraseña" required />
 
-    <label>Usuario:</label>
-    <input type="text" th:field="*{username}" required />
+        <label>¿Eres monitor?</label>
+        <select id="esMonitor" name="esMonitor" onchange="toggleDeporte()">
+            <option value="false">No</option>
+            <option value="true">Sí</option>
+        </select>
 
-    <label>Contraseña:</label>
-    <input type="password" th:field="*{password}" required />
+        <div id="deporteMonitor" style="display: none;">
+            <label>Deporte que impartes:</label>
+            <input type="text" name="deporteMonitor" placeholder="Introduce el deporte que impartes" />
+        </div>
 
-    <label>¿Eres monitor?</label>
-    <select id="esMonitor" name="esMonitor" onchange="toggleDeporte()">
-        <option value="false">No</option>
-        <option value="true">Sí</option>
-    </select>
+        <button type="submit">Registrarse</button>
+    </form>
 
-    <div id="deporteMonitor" style="display: none;">
-        <label>Deporte que impartes:</label>
-        <input type="text" name="deporteMonitor" />
-    </div>
-
-    <button type="submit">Registrarse</button>
-</form>
-
-<a class="back-link" th:href="@{/login}">⬅ Volver al login</a>
+    <a class="back-link" th:href="@{/login}">⬅ Volver al login</a>
+</div>
 
 <script>
     function toggleDeporte() {
@@ -109,6 +145,5 @@
         deporteDiv.style.display = select.value === "true" ? "block" : "none";
     }
 </script>
-
 </body>
 </html>
