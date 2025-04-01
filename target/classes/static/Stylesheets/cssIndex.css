@@ -1,0 +1,31 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+#content {
+    margin-left: 200px; /* deja espacio para el sidebar */
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.botones {
+    display: inline-block;
+    margin-top: 10px;
+    text-decoration: none;
+    background-color: #2c3e50;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 5px;
+}
+
+.botones:hover {
+    background-color: #34495e;
+}
+
+p {
+    font-size: 1.1rem;
+}
