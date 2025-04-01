@@ -130,6 +130,10 @@ public class ActividadController {
 
         if (usuario instanceof Cliente cliente && actividad != null) {
             boolean yaReservado = reservaRepository.existsByUsuarioAndActividad(cliente, actividad);
+            if ("Cancelada".equalsIgnoreCase(actividad.getEstado())) {
+                redirectAttributes.addFlashAttribute("mensaje", "No puedes reservar: la actividad ha sido cancelada.");
+                return "redirect:/actividades/" + actividadId;
+            }
             if (!yaReservado) {
                 Reserva reserva = new Reserva();
                 reserva.setUsuario(cliente);
