@@ -104,6 +104,7 @@
                     <p><strong>Fecha:</strong> <span
                             th:text="${#temporals.format(actividad.fecha, 'dd/MM/yyyy HH:mm')}">Fecha</span></p>
                     <p><strong>Precio:</strong> <span th:text="${actividad.precio}">0</span> €</p>
+                    <p><strong>Nivel:</strong> <span th:text="${actividad.nivel}">Nivel</span></p>
                     <span class="badge" th:if="${actividad.estado == 'Cancelada'}">Cancelada</span>
 
                     <a class="btn" th:href="@{'/actividades/' + ${actividad.id}}">Más detalles</a>
