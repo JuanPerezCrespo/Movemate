@@ -3,13 +3,16 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9; /* Fondo gris claro */
-    color: #333; /* Color del texto */
+    background-color: #f4f4f9;
+    /* Fondo gris claro */
+    color: #333;
+    /* Color del texto */
 }
 
 h1 {
     text-align: center;
-    color: #4CAF50; /* Verde suave */
+    color: black;
+    /* Verde suave */
     margin-bottom: 20px;
 }
 
@@ -17,94 +20,74 @@ h1 {
 #contenido {
     margin: 10px;
     padding: 20px;
-    background-color: #fff; /* Fondo blanco */
+    background-color: #fff;
+    /* Fondo blanco */
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Sombra ligera */
     margin-left: 240px;
 }
 
 /* Botones de filtro */
-.mb-4 {
+#botones {
     display: flex;
+    flex-direction: row;
+    align-items: center;
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.mb-4 .btn {
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
+    gap: 20px;
     font-size: 14px;
     font-weight: bold;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-bottom: 10px;
 }
 
-.mb-4 .btn-outline-primary {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-}
-
-.mb-4 .btn-outline-primary:hover {
-    background-color: #388E3C;
-}
-
-.mb-4 .btn-outline-secondary {
+.boton {
     background-color: #2196F3;
     color: white;
     border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
 }
 
-.mb-4 .btn-outline-secondary:hover {
+.boton:hover {
     background-color: #1976D2;
-}
-
-.mb-4 .btn-outline-warning {
-    background-color: #FFC107;
-    color: white;
-    border: none;
-}
-
-.mb-4 .btn-outline-warning:hover {
-    background-color: #FFA000;
 }
 
 /* Contenedor de actividades */
 #actividades {
     display: flex;
-    flex-wrap: wrap; /* Permite que las tarjetas se ajusten en pantallas pequeñas */
-    gap: 30px; /* Aumenta el espacio entre las tarjetas */
-    justify-content: center; /* Centra las tarjetas en el contenedor */
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
 }
 
 /* Tarjetas de actividades */
-.card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-sizing: border-box; /* Incluye padding y border en el tamaño total */
-    width: auto; /* Permite que la tarjeta se ajuste al contenido */
-    height: 370px;
+.actividad {
+    background-color: #fff9c4; /* Fondo amarillo */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    padding: 10px; /* Espaciado interno */
+    margin: 10px 10px; /* Espaciado vertical entre filas */
+    display: flex; /* Flexbox para alinear elementos */
+    flex-direction: column; /* Coloca los elementos en columna */
+    width: 33%;
 }
 
-.card:hover {
+.actividad:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.card-img-top {
-    width: 250px; /* Ancho fijo para la imagen */
-    height: 150px; /* Altura fija para la imagen */
-    object-fit: cover; /* Asegura que la imagen se ajuste sin deformarse */
-    padding: 5px;
+.imagen-actividad{
+    object-fit: contain; /* Mantiene la proporción de la imagen */
+    width: 100%; /* Ancho completo del contenedor */
 }
 
 .card-body {
     padding: 10px;
     display: flex;
-    flex-direction: column; /* Asegura que los elementos se apilen verticalmente */
+    flex-direction: column;
 }
 
 .card-title {
@@ -131,7 +114,7 @@ h1 {
     font-weight: bold;
     transition: background-color 0.3s ease;
     width: fit-content;
-    align-self: center; /* Centra el botón horizontalmente */
+    align-self: center;
 }
 
 .card-body .btn:hover {
@@ -141,9 +124,13 @@ h1 {
 /* Etiqueta de cancelada */
 .badge {
     display: inline-block;
-    padding: 5px 10px;
-    font-size: 12px;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
     border-radius: 5px;
-    background-color: #e0e0e0;
-    color: #757575;
+    background-color: red;
+    color: white;
+    text-align: center;
+    width: fit-content;
+    align-self: center;
 }
