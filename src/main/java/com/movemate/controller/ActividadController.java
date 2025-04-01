@@ -50,40 +50,41 @@ public class ActividadController {
     // Método que maneja la petición GET para listar actividades.
     // Permite filtrar las actividades por estado (futuras, pasadas o todas).
    
-    @GetMapping("/actividades")
+@GetMapping("/actividades")
 public String listarActividades(
-        @RequestParam(required = false, defaultValue = "todas") String mostrar,
+        @RequestParam(required = false) String mostrar, // Nuevo parámetro para filtrar por tiempo
         @RequestParam(required = false) Double minPrice,
         @RequestParam(required = false) Double maxPrice,
+        @RequestParam(required = false) String ubicacion,
+        @RequestParam(required = false) String deporte,
         Model model) {
-    LocalDateTime fechaActual = LocalDateTime.now(); // Variable con la fecha actual
-    List<Actividad> actividades;
+    LocalDateTime fechaActual = LocalDateTime.now();
 
-    switch (mostrar) {
-        case "futuras" -> // Filtrar actividades con fecha posterior a la actual
-            actividades = actividadRepository.findAll().stream()
-                    .filter(a -> a.getFecha().isAfter(fechaActual))
-                    .filter(a -> !"Cancelada".equalsIgnoreCase(a.getEstado()))
-                    .toList();
-        case "pasadas" -> // Filtrar actividades con fecha anterior a la actual
-            actividades = actividadRepository.findAll().stream()
-                    .filter(a -> a.getFecha().isBefore(fechaActual))
-                    .toList();
-        case "precio" -> { // Filtrar actividades por rango de precios
-            actividades = actividadRepository.findAll().stream()
-                    .filter(a -> (minPrice == null || a.getPrecio() >= minPrice))
-                    .filter(a -> (maxPrice == null || a.getPrecio() <= maxPrice))
-                    .toList();
-        }
-        case "todas" -> // Mostrar todas las actividades
-            actividades = actividadRepository.findAll();
-        default -> // Por defecto, mostrar todas las actividades
-            actividades = actividadRepository.findAll();
-    }
+    // Obtener todas las actividades y aplicar filtros acumulativos
+    List<Actividad> actividades = actividadRepository.findAll().stream()
+            .filter(a -> {
+                if ("futuras".equalsIgnoreCase(mostrar)) {
+                    return a.getFecha().isAfter(fechaActual); // Filtrar actividades futuras
+                } else if ("pasadas".equalsIgnoreCase(mostrar)) {
+                    return a.getFecha().isBefore(fechaActual); // Filtrar actividades pasadas
+                }
+                return true; // Mostrar todas las actividades si no se especifica filtro
+            })
+            .filter(a -> minPrice == null || a.getPrecio() >= minPrice) // Filtrar por precio mínimo
+            .filter(a -> maxPrice == null || a.getPrecio() <= maxPrice) // Filtrar por precio máximo
+            .filter(a -> ubicacion == null || ubicacion.isEmpty() || ubicacion.equalsIgnoreCase(a.getUbicacion())) // Filtrar por ubicación
+            .filter(a -> deporte == null || deporte.isEmpty() || deporte.equalsIgnoreCase(a.getDeporte())) // Filtrar por deporte
+            .toList();
 
+    // Pasar los filtros y actividades al modelo
     model.addAttribute("actividades", actividades);
     model.addAttribute("mostrar", mostrar);
-    model.addAttribute("fechaActual", fechaActual); // Pasar la fecha actual al modelo (opcional)
+    model.addAttribute("ubicacion", ubicacion);
+    model.addAttribute("deporte", deporte);
+    model.addAttribute("minPrice", minPrice);
+    model.addAttribute("maxPrice", maxPrice);
+    model.addAttribute("fechaActual", fechaActual);
+
     return "actividades";
 }
 
