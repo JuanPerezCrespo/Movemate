@@ -16,6 +16,7 @@
             <div class="actividad-info">
                 <p><strong>Deporte:</strong> <span th:text="${actividad.deporte}"></span></p>
                 <p><strong>Ubicación:</strong> <span th:text="${actividad.ubicacion}"></span></p>
+                <p><strong>Dirección:</strong> <span th:text="${actividad.direccion}"></span></p>
                 <p><strong>Fecha y hora:</strong> <span
                         th:text="${#temporals.format(actividad.fecha, 'dd/MM/yyyy HH:mm')}"></span></p>
                 <p><strong>Precio:</strong> <span th:text="${actividad.precio}"></span> €</p>
