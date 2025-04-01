@@ -70,7 +70,7 @@
 
         <div sec:authorize="hasRole('CLIENTE')">
             <form th:action="@{/actividades/reservar}" method="post"
-                th:if="${actividad.reservas.?[usuario.username == #authentication.name].size() == 0}">
+                th:if="${actividad.estado != 'Completa' && actividad.estado != 'Cancelada' && actividad.reservas.?[usuario.username == #authentication.name].size() == 0}">
                 <input type="hidden" name="actividadId" th:value="${actividad.id}" />
                 <button type="submit">✅ Apuntarme</button>
             </form>
@@ -78,6 +78,9 @@
                 🚫 Esta actividad está completa. No se aceptan más inscripciones.
             </p>
 
+            <p th:if="${actividad.estado == 'Cancelada'}" style="color: red;">
+                🚫 Esta actividad ha sido cancelada. No es posible inscribirse en ella.
+            </p>
         
             <!-- Mostrar botón de desapuntarse solo si el usuario ya está inscrito -->
             <form th:action="@{/actividades/desapuntarse}" method="post"
