@@ -51,35 +51,45 @@ public class ActividadController {
     // Permite filtrar las actividades por estado (futuras, pasadas o todas).
    
     @GetMapping("/actividades")
-    public String listarActividades(@RequestParam(required = false, defaultValue = "todas") String mostrar, Model model) {
-        LocalDateTime fechaActual = LocalDateTime.now(); // Variable con la fecha actual
-        List<Actividad> actividades;
-    
-        switch (mostrar) {
-            case "futuras" -> // Filtrar actividades con fecha posterior a la actual
-                actividades = actividadRepository.findAll().stream()
-                        .filter(a -> a.getFecha().isAfter(fechaActual))
-                        .filter(a -> !"Cancelada".equalsIgnoreCase(a.getEstado()))
-                        .toList();
-            case "pasadas" -> // Filtrar actividades con fecha anterior a la actual
-                actividades = actividadRepository.findAll().stream()
-                        .filter(a -> a.getFecha().isBefore(fechaActual))
-                        .toList();
-            case "todas" -> // Mostrar todas las actividades
-                actividades = actividadRepository.findAll();
-            default -> // Por defecto, mostrar todas las actividades
-                actividades = actividadRepository.findAll();
+public String listarActividades(
+        @RequestParam(required = false, defaultValue = "todas") String mostrar,
+        @RequestParam(required = false) Double minPrice,
+        @RequestParam(required = false) Double maxPrice,
+        Model model) {
+    LocalDateTime fechaActual = LocalDateTime.now(); // Variable con la fecha actual
+    List<Actividad> actividades;
+
+    switch (mostrar) {
+        case "futuras" -> // Filtrar actividades con fecha posterior a la actual
+            actividades = actividadRepository.findAll().stream()
+                    .filter(a -> a.getFecha().isAfter(fechaActual))
+                    .filter(a -> !"Cancelada".equalsIgnoreCase(a.getEstado()))
+                    .toList();
+        case "pasadas" -> // Filtrar actividades con fecha anterior a la actual
+            actividades = actividadRepository.findAll().stream()
+                    .filter(a -> a.getFecha().isBefore(fechaActual))
+                    .toList();
+        case "precio" -> { // Filtrar actividades por rango de precios
+            actividades = actividadRepository.findAll().stream()
+                    .filter(a -> (minPrice == null || a.getPrecio() >= minPrice))
+                    .filter(a -> (maxPrice == null || a.getPrecio() <= maxPrice))
+                    .toList();
         }
-    
-        model.addAttribute("actividades", actividades);
-        model.addAttribute("mostrar", mostrar);
-        model.addAttribute("fechaActual", fechaActual); // Pasar la fecha actual al modelo (opcional)
-        return "actividades";
+        case "todas" -> // Mostrar todas las actividades
+            actividades = actividadRepository.findAll();
+        default -> // Por defecto, mostrar todas las actividades
+            actividades = actividadRepository.findAll();
     }
+
+    model.addAttribute("actividades", actividades);
+    model.addAttribute("mostrar", mostrar);
+    model.addAttribute("fechaActual", fechaActual); // Pasar la fecha actual al modelo (opcional)
+    return "actividades";
+}
 
     @GetMapping("/actividades/nueva")
     public String mostrarFormulario(Model model) {
-        model.addAttribute("actividad", new Actividad());
+        model.addAttribute("actividad", new Actividad());   // Crear un nuevo objeto Actividad para el formulario
         return "crear-actividad";
     }
 
@@ -142,58 +152,71 @@ public class ActividadController {
         if (actividadOpt.isPresent()) {
             Actividad actividad = actividadOpt.get();
             model.addAttribute("actividad", actividad);
-
+    
+            // Verificar si la actividad ya ha ocurrido
+            boolean actividadYaOcurrida = actividad.getFecha().isBefore(LocalDateTime.now());
+            model.addAttribute("actividadYaOcurrida", actividadYaOcurrida);
+    
             // Verificar si el usuario está apuntado
             String username = auth.getName();
             Usuario usuario = usuarioRepository.findByUsername(username).orElse(null);
             boolean usuarioReservado = false;
-
+    
             if (usuario instanceof Cliente cliente) {
                 usuarioReservado = reservaRepository.existsByUsuarioAndActividad(cliente, actividad);
             }
-
+    
             model.addAttribute("usuarioReservado", usuarioReservado);
             return "detalle-actividad";
         } else {
-            return "redirect:/actividades";
+            return "redirect:/actividades"; // Redirige si la actividad no existe
         }
     }
 
     @PostMapping("/actividades/reservar")
-    public String reservar(@RequestParam Long actividadId, Authentication auth, RedirectAttributes redirectAttributes) {
-        String username = auth.getName();
-        Usuario usuario = usuarioRepository.findByUsername(username).orElse(null);
-        Actividad actividad = actividadRepository.findById(actividadId).orElse(null);
+public String reservar(@RequestParam Long actividadId, Authentication auth, RedirectAttributes redirectAttributes) {
+    String username = auth.getName();
+    Usuario usuario = usuarioRepository.findByUsername(username).orElse(null);
+    Actividad actividad = actividadRepository.findById(actividadId).orElse(null);
 
-        if (usuario instanceof Cliente cliente && actividad != null) {
-            boolean yaReservado = reservaRepository.existsByUsuarioAndActividad(cliente, actividad);
-            if ("Cancelada".equalsIgnoreCase(actividad.getEstado())) {
-                redirectAttributes.addFlashAttribute("mensaje", "No puedes reservar: la actividad ha sido cancelada.");
-                return "redirect:/actividades/" + actividadId;
-            }
-            if (!yaReservado) {
-                Reserva reserva = new Reserva();
-                reserva.setUsuario(cliente);
-                reserva.setActividad(actividad);
-                reservaRepository.save(reserva);
+    if (usuario instanceof Cliente cliente && actividad != null) {
+        boolean yaReservado = reservaRepository.existsByUsuarioAndActividad(cliente, actividad);
 
-                actividad.setParticipantes(actividad.getParticipantes() + 1);
-                if (actividad.getParticipantes() >= actividad.getMaxParticipantes()) {
-                    actividad.setEstado("Completa");
-                }
-
-                actividadRepository.save(actividad);
-
-                redirectAttributes.addFlashAttribute("mensaje", "✅ Te has apuntado correctamente.");
-            } else {
-                redirectAttributes.addFlashAttribute("mensaje", "⚠️ Ya estabas apuntado a esta actividad.");
-            }
-        } else {
-            redirectAttributes.addFlashAttribute("mensaje", "❌ Error al apuntarse.");
+        // Validar si la actividad ya ha ocurrido
+        if (actividad.getFecha().isBefore(LocalDateTime.now())) {
+            redirectAttributes.addFlashAttribute("mensaje", "🚫 Esta actividad ya ha ocurrido. No es posible inscribirse en ella.");
+            return "redirect:/actividades/" + actividadId;
         }
 
-        return "redirect:/actividades/" + actividadId;
+        // Validar si la actividad está cancelada
+        if ("Cancelada".equalsIgnoreCase(actividad.getEstado())) {
+            redirectAttributes.addFlashAttribute("mensaje", "🚫 Esta actividad ha sido cancelada. No es posible inscribirse en ella.");
+            return "redirect:/actividades/" + actividadId;
+        }
+
+        if (!yaReservado) {
+            Reserva reserva = new Reserva();
+            reserva.setUsuario(cliente);
+            reserva.setActividad(actividad);
+            reservaRepository.save(reserva);
+
+            actividad.setParticipantes(actividad.getParticipantes() + 1);
+            if (actividad.getParticipantes() >= actividad.getMaxParticipantes()) {
+                actividad.setEstado("Completa");
+            }
+
+            actividadRepository.save(actividad);
+
+            redirectAttributes.addFlashAttribute("mensaje", "✅ Te has apuntado correctamente.");
+        } else {
+            redirectAttributes.addFlashAttribute("mensaje", "⚠️ Ya estabas apuntado a esta actividad.");
+        }
+    } else {
+        redirectAttributes.addFlashAttribute("mensaje", "❌ Error al apuntarse.");
     }
+
+    return "redirect:/actividades/" + actividadId;
+}
 
     @PostMapping("/actividades/desapuntarse")
     public String desapuntarse(@RequestParam Long actividadId, Authentication auth,

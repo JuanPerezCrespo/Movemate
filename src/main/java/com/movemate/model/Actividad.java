@@ -15,7 +15,10 @@ public class Actividad {
 
     private String deporte;
     private String ubicacion;
-
+    private String direccion; //Dirección para geocodificación
+    private Double latitud;
+    private Double longitud;
+    
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime fecha;
 
@@ -43,9 +46,6 @@ public class Actividad {
     @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL)
     private List<Reserva> reservas;
 
-    private String direccion; //Dirección para geocodificación
-    private Double latitud;
-    private Double longitud;
 
     // Getters y Setters
 

@@ -24,7 +24,6 @@
                         th:text="${actividad.participantes}+'/'+${actividad.maxParticipantes}"></span></p>
                 <p><strong>Descripción:</strong> <span th:text="${actividad.descripcion}"></span></p>
                 <p><strong>Monitor:</strong> <span th:text="${actividad.monitor?.nombre ?: 'No asignado'}"></span></p>
-                <p><strong>Estado:</strong> <span th:text="${actividad.estado}"></span></p>
             </div>
             <div th:if="${actividad.reservas}">
                 <h3>Participantes inscritos:</h3>
@@ -41,12 +40,14 @@
             <p th:if="${actividad.estado == 'Completa'}" style="color: red;">
                 🚫 Esta actividad está completa. No se aceptan más inscripciones.
             </p>
-
+        
             <p th:if="${actividad.estado == 'Cancelada'}" style="color: red;">
                 🚫 Esta actividad ha sido cancelada. No es posible inscribirse en ella.
             </p>
-
-            <p>Estado actual: <b th:text="${actividad.estado}">?</b></p>
+            <p th:if="${actividadYaOcurrida}" style="color: red;">
+                🚫 Esta actividad ya ha ocurrido. No es posible inscribirse en ella.
+            </p>
+        
             <form th:action="@{/actividades/reservar}" method="post"
                 th:if="${actividad.estado == 'Disponible' && actividad.reservas.?[usuario.username == #authentication.name].size() == 0}">
                 <input type="hidden" name="actividadId" th:value="${actividad.id}" />
