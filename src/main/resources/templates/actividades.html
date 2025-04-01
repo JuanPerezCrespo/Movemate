@@ -108,7 +108,7 @@
                         if (actividad.latitud && actividad.longitud) {
                             L.marker([actividad.latitud, actividad.longitud])
                                 .addTo(map)
-                                .bindPopup(`<b>${actividad.nombre}</b><br><a href='/actividades/${actividad.id}'>Ver más</a>`);
+                                .bindPopup(`<b>${actividad.deporte}</b><br><a href='/actividades/${actividad.id}'>Ver más</a>`);
                         }
                     });
                 })
