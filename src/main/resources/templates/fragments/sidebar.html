@@ -1,0 +1,61 @@
+<!-- src/main/resources/templates/fragments/sidebar.html -->
+<div th:fragment="sidebar">
+    <style>
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 230px;
+            height: 100vh;
+            background-color: #1e3a8a;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .sidebar h2 {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: #e0e7ff;
+            text-align: center;
+        }
+
+        .sidebar a,
+        .sidebar form button {
+            width: 100%;
+            padding: 12px;
+            margin: 6px 0;
+            background: none;
+            border: none;
+            border-radius: 5px;
+            color: #e0e7ff;
+            text-decoration: none;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .sidebar a:hover,
+        .sidebar form button:hover {
+            background-color: #2980b9;
+        }
+
+        .sidebar form {
+            width: 100%;
+        }
+    </style>
+
+    <div class="sidebar">
+        <h2>Movemate</h2>
+        <a th:href="@{/}">🏠 Inicio</a>
+        <a th:href="@{/actividades}">📅 Actividades</a>
+        <!--<a th:href="@{/perfil}">👤 Mi perfil</a>-->
+        <a th:href="@{/mis-actividades}">📋 Mi perfil</a>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">🔓 Logout</button>
+        </form>
+    </div>
+</div>

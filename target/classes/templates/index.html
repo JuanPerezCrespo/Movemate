@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio - Movemate</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .content {
+            margin-left: 240px; /* deja espacio para el sidebar */
+            padding: 30px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 10px;
+            text-decoration: none;
+            background-color: #2c3e50;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 5px;
+        }
+
+        a:hover {
+            background-color: #34495e;
+        }
+
+        p {
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar reutilizable -->
+<div th:replace="fragments/sidebar :: sidebar"></div>
+
+<!-- Contenido principal -->
+<div class="content">
+    <h1>Bienvenido a Movemate</h1>
+
+    <div sec:authorize="isAuthenticated()">
+        <p>Hola, <strong><span sec:authentication="name"></span></strong></p>
+
+        <div sec:authorize="hasRole('MONITOR')">
+            <a th:href="@{/actividades/nueva}">➕ Crear nueva actividad</a>
+        </div>
+
+        <div sec:authorize="hasRole('CLIENTE')">
+            <a th:href="@{/actividades}">📅 Ver y reservar actividades</a>
+            <!-- Incluir el contenido de actividades.html -->
+            <!--<div th:include="actividades :: content"></div> -->
+        </div>
+    </div>
+
+    <div sec:authorize="isAnonymous()">
+        <p>No has iniciado sesión.</p>
+        <a th:href="@{/login}">🔐 Iniciar sesión</a><br/>
+        <a th:href="@{/registro}">📝 Registrarse</a>
+    </div>
+</div>
+
+</body>
+</html>
