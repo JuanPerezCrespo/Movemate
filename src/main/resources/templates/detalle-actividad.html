@@ -22,7 +22,8 @@
                 <p><strong>Precio:</strong> <span th:text="${actividad.precio}"></span> €</p>
                 <p><strong>Participantes:</strong> <span
                         th:text="${actividad.participantes}+'/'+${actividad.maxParticipantes}"></span></p>
-                <p><strong>Nivel:</strong> <span th:text="${actividad.nivel}"></span></p> <!-- Nuevo campo para el nivel -->
+                <p><strong>Nivel:</strong> <span th:text="${actividad.nivel}"></span></p>
+                <!-- Nuevo campo para el nivel -->
                 <p><strong>Descripción:</strong> <span th:text="${actividad.descripcion}"></span></p>
             </div>
             <div th:if="${actividad.reservas}">
@@ -40,14 +41,14 @@
             <p th:if="${actividad.estado == 'Completa'}" style="color: red;">
                 🚫 Esta actividad está completa. No se aceptan más inscripciones.
             </p>
-        
+
             <p th:if="${actividad.estado == 'Cancelada'}" style="color: red;">
                 🚫 Esta actividad ha sido cancelada. No es posible inscribirse en ella.
             </p>
             <p th:if="${actividadYaOcurrida}" style="color: red;">
                 🚫 Esta actividad ya ha ocurrido. No es posible inscribirse en ella.
             </p>
-        
+
             <form th:action="@{/actividades/reservar}" method="post"
                 th:if="${actividad.estado == 'Disponible' && actividad.reservas.?[usuario.username == #authentication.name].size() == 0}">
                 <input type="hidden" name="actividadId" th:value="${actividad.id}" />
@@ -56,37 +57,39 @@
             <form th:action="@{/actividades/desapuntarse}" method="post"
                 th:if="${actividad.reservas.?[usuario.username == #authentication.name].size() > 0}">
                 <input type="hidden" name="actividadId" th:value="${actividad.id}" />
-                <button type="submit" >Desapuntarse</button>
+                <button type="submit">Desapuntarse</button>
             </form>
-            <p><strong>Estado:</strong> <span th:text="${actividad.estado}"></span></p>
+            <p th:if="${actividad.fecha.isAfter(T(java.time.LocalDateTime).now())}">
+                <strong>Estado:</strong> <span th:text="${actividad.estado}"></span>
+            </p>
         </div>
-        
+
         <div id="botones">
             <form th:action="@{/actividades/{id}/cancelar(id=${actividad.id})}" method="post"
-            th:if="${#authentication.name == actividad.monitor.username and actividad.estado != 'Cancelada'}">
-            <button type="submit" class="btn btn-danger mt-3">
-                ❌ Cancelar actividad
-            </button>
-        </form>
-        <form th:action="@{'/actividades/' + ${actividad.id} + '/habilitar'}" method="post"
-            th:if="${#authentication.name == actividad.monitor.username and actividad.estado == 'Cancelada'}">
-            <button type="submit" class="btn btn-success mt-3">
-                ✅ Habilitar Actividad
-            </button>
-        </form>
-        <form th:action="@{'/actividades/' + ${actividad.id} + '/eliminar'}" method="post"
-            th:if="${#authentication.name == actividad.monitor.username}">
-            <button type="submit" class="btn btn-danger mt-3"
-                onclick="return confirm('¿Estás seguro de que deseas eliminar esta actividad?');">
-                🗑️ Eliminar Actividad
-            </button>
-        </form>
-        <form th:action="@{'/actividades/' + ${actividad.id} + '/editar'}" method="get"
-            th:if="${#authentication.name == actividad.monitor.username}">
-            <button type="submit" class="btn btn-primary mt-3">
-                ✏️ Editar Actividad
-            </button>
-        </form>
+                th:if="${#authentication.name == actividad.monitor.username and actividad.estado != 'Cancelada'}">
+                <button type="submit" class="btn btn-danger mt-3">
+                    ❌ Cancelar actividad
+                </button>
+            </form>
+            <form th:action="@{'/actividades/' + ${actividad.id} + '/habilitar'}" method="post"
+                th:if="${#authentication.name == actividad.monitor.username and actividad.estado == 'Cancelada'}">
+                <button type="submit" class="btn btn-success mt-3">
+                    ✅ Habilitar Actividad
+                </button>
+            </form>
+            <form th:action="@{'/actividades/' + ${actividad.id} + '/eliminar'}" method="post"
+                th:if="${#authentication.name == actividad.monitor.username}">
+                <button type="submit" class="btn btn-danger mt-3"
+                    onclick="return confirm('¿Estás seguro de que deseas eliminar esta actividad?');">
+                    🗑️ Eliminar Actividad
+                </button>
+            </form>
+            <form th:action="@{'/actividades/' + ${actividad.id} + '/editar'}" method="get"
+                th:if="${#authentication.name == actividad.monitor.username}">
+                <button type="submit" class="btn btn-primary mt-3">
+                    ✏️ Editar Actividad
+                </button>
+            </form>
         </div>
 
 
