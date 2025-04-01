@@ -4,45 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Editar Actividad</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-
-        .content {
-            margin-left: 240px;
-            padding: 30px;
-        }
-
-        form input,
-        form textarea {
-            width: 100%;
-            padding: 8px;
-            margin: 10px 0;
-            box-sizing: border-box;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #1e3a8a;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        button:hover {
-            background-color: #3b82f6;
-        }
-
-        a {
-            display: inline-block;
-            margin-top: 15px;
-            text-decoration: none;
-            color: #1e3a8a;
-        }
-    </style>
+    <link rel="stylesheet" href="/Stylesheets/cssCrearActividad.css">
 </head>
 
 <body>
@@ -62,7 +24,7 @@
             <input type="text" th:field="*{monitor.nombre}" placeholder="Escribe el nombre del monitor"
                 required /><br />
 
-            <label>Deporte:</label>
+            <label>Tipo de actividad:</label>
             <select th:field="*{deporte}" required>
                 <option value="" disabled selected>Selecciona un deporte</option>
                 <option value="Fútbol">Fútbol</option>
