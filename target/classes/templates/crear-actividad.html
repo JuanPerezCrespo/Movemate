@@ -17,7 +17,7 @@
 
     <form th:action="@{/actividades/guardar}" th:object="${actividad}" method="post" enctype="multipart/form-data">
         <label>Monitor asignado:</label>
-        <input type="text" th:field="*{monitor.nombre}" placeholder="Escribe el nombre del monitor que imparte la actividad" required /><br/>
+        <input type="text" th:field="*{monitor.nombre}" placeholder="Escribe el nombre del monitor que imparte la actividad" required />
         
         <label>Deporte:</label>
         <select th:field="*{deporte}" required>
