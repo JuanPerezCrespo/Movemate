@@ -24,7 +24,6 @@
                         th:text="${actividad.participantes}+'/'+${actividad.maxParticipantes}"></span></p>
                 <p><strong>Descripción:</strong> <span th:text="${actividad.descripcion}"></span></p>
                 <p><strong>Monitor:</strong> <span th:text="${actividad.monitor?.nombre ?: 'No asignado'}"></span></p>
-                <p><strong>Estado:</strong> <span th:text="${actividad.estado}"></span></p>
             </div>
             <div th:if="${actividad.reservas}">
                 <h3>Participantes inscritos:</h3>
