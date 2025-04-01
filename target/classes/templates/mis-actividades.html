@@ -48,7 +48,7 @@
                         <p><strong>Deporte:</strong> <span th:text="${reserva.actividad.deporte}"></span></p>
                         <ul>
                             <li>
-                                <p><strong>Fecha:</strong> <span th:text="${reserva.actividad.fecha}"></span></p>
+                                <p><strong>Fecha:</strong> <span th:text="${#temporals.format(reserva.actividad.fecha, 'dd/MM/yyyy HH:mm')}"></span></p>
                             </li>
                             <li>
                                 <p><strong>Ubicación:</strong> <span th:text="${reserva.actividad.ubicacion}"></span>
