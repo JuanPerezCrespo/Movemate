@@ -21,10 +21,10 @@
         <div class="filtros-container">
             <h2>Filtros</h2>
             <div class="filtros-box">
-                <!-- Nueva lista desplegable para seleccionar el tipo de actividades -->
                 <form th:action="@{/actividades}" method="get" style="display: flex; flex-wrap: wrap; gap: 15px;">
+                    <!-- Filtro por tipo de actividades -->
                     <div>
-                        <label for="mostrar">Tipo de Actividades:</label>
+                        <label for="mostrar">Fecha:</label>
                         <select id="mostrar" name="mostrar" onchange="this.form.submit()">
                             <option value="todas" th:selected="${mostrar == 'todas' || mostrar == null}">Todas</option>
                             <option value="futuras" th:selected="${mostrar == 'futuras'}">Próximas Actividades</option>
@@ -32,6 +32,7 @@
                         </select>
                     </div>
 
+                    <!-- Filtro por ubicación -->
                     <div>
                         <label for="ubicacion">Ubicación:</label>
                         <select id="ubicacion" name="ubicacion" onchange="this.form.submit()">
@@ -45,8 +46,9 @@
                         </select>
                     </div>
 
+                    <!-- Filtro por deporte -->
                     <div>
-                        <label for="deporte">Deporte:</label>
+                        <label for="deporte">Tipo de actividad:</label>
                         <select id="deporte" name="deporte" onchange="this.form.submit()">
                             <option value="" th:selected="${deporte == null || deporte == ''}">Todos los deportes</option>
                             <option value="Fútbol" th:selected="${deporte == 'Fútbol'}">Fútbol</option>
@@ -58,7 +60,7 @@
                         </select>
                     </div>
 
-                    <!-- Nuevo filtro por nivel -->
+                    <!-- Filtro por nivel -->
                     <div>
                         <label for="nivel">Nivel:</label>
                         <select id="nivel" name="nivel" onchange="this.form.submit()">
@@ -69,16 +71,19 @@
                         </select>
                     </div>
 
+                    <!-- Filtro por precio mínimo -->
                     <div>
                         <label for="minPrice">Precio mínimo:</label>
                         <input type="number" id="minPrice" name="minPrice" step="0.01" placeholder="0.00" th:value="${minPrice}" />
                     </div>
 
+                    <!-- Filtro por precio máximo -->
                     <div>
                         <label for="maxPrice">Precio máximo:</label>
                         <input type="number" id="maxPrice" name="maxPrice" step="0.01" placeholder="0.00" th:value="${maxPrice}" />
                     </div>
 
+                    <!-- Botón de filtrar -->
                     <div>
                         <button type="submit" class="boton">Filtrar</button>
                     </div>
