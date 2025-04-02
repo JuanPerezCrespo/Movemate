@@ -11,12 +11,14 @@ com/movemate/data/DataInitializer.class
 com/movemate/model/Pago.class
 com/movemate/security/CustomUserDetails.class
 com/movemate/controller/ActividadController.class
+com/movemate/service/GeocodingService.class
 com/movemate/controller/HomeController.class
 com/movemate/repository/ClienteRepository.class
 com/movemate/controller/UsuarioController.class
 com/movemate/model/Actividad.class
 com/movemate/controller/RegistroController.class
 com/movemate/model/Usuario.class
+com/movemate/service/ActividadService.class
 com/movemate/controller/LoginRedirectController.class
 com/movemate/model/Reserva.class
 com/movemate/model/Cliente.class

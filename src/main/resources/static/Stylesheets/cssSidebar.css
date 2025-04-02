@@ -36,3 +36,11 @@
 .sidebar form button:hover {
     background-color: #2980b9;
 }
+.spacer {
+    flex-grow: 1;
+}
+
+.logout-button {
+    color: #c0392b;
+    font-weight: bold;
+}

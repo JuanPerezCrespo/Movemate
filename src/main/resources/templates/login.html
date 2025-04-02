@@ -5,64 +5,78 @@
     <meta charset="UTF-8">
     <title>Iniciar sesión - Movemate</title>
     <style>
-        /* Estilo general */
+        /* Estilo general con fondo */
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9; /* Fondo claro */
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-family: Arial, sans-serif;
             height: 100vh;
+            background-image: url('/images/fondo-login.jpg'); /* Ruta de la imagen */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        /* Capa oscura opcional para contraste */
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 0;
         }
 
         .login-container {
+            position: relative;
+            z-index: 1;
             background: white;
             padding: 40px;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra elegante */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             width: 100%;
-            max-width: 400px; /* Ancho máximo */
+            max-width: 400px;
+            margin: auto;
+            top: 50%;
+            transform: translateY(-50%);
             text-align: center;
         }
 
         h2 {
             margin-bottom: 20px;
-            color: #1e3a8a; /* Azul oscuro */
+            color: #1e3a8a;
             font-size: 24px;
         }
 
         label {
             display: block;
             text-align: left;
-            margin-bottom: 5px;
+            margin: 10px 0 5px;
             font-weight: bold;
             color: #333;
         }
 
         input[type="text"],
         input[type="password"] {
+            width: 100%;
             padding: 12px;
             border: 1px solid #ccc;
             border-radius: 6px;
-            width: 100%;
             margin-bottom: 15px;
-            font-size: 14px;
             box-sizing: border-box;
+            font-size: 14px;
         }
 
-        input[type="text"]:focus,
-        input[type="password"]:focus {
-            border-color: #1e3a8a; /* Azul oscuro */
+        input:focus {
+            border-color: #1e3a8a;
             outline: none;
-            box-shadow: 0 0 5px rgba(30, 58, 138, 0.3); /* Sombra al enfocar */
+            box-shadow: 0 0 5px rgba(30, 58, 138, 0.3);
         }
 
         button {
             width: 100%;
             padding: 12px;
-            background-color: #1e3a8a; /* Azul oscuro */
+            background-color: #1e3a8a;
             color: white;
             border: none;
             border-radius: 6px;
@@ -73,7 +87,7 @@
         }
 
         button:hover {
-            background-color: #2c5282; /* Azul más claro */
+            background-color: #2c5282;
         }
 
         .register-link {
@@ -82,7 +96,7 @@
         }
 
         .register-link a {
-            color: #1e3a8a; /* Azul oscuro */
+            color: #1e3a8a;
             text-decoration: none;
             font-weight: bold;
         }
@@ -105,7 +119,6 @@
         <button type="submit">Entrar</button>
     </form>
 
-    <!-- Enlace a registro -->
     <div class="register-link">
         <p>¿No tienes cuenta? <a th:href="@{/registro}">Regístrate aquí</a></p>
     </div>

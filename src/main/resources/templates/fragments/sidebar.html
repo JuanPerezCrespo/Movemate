@@ -1,13 +1,25 @@
 <!-- src/main/resources/templates/fragments/sidebar.html -->
 <div th:fragment="sidebar">
     <link rel="stylesheet" href="/Stylesheets/cssSidebar.css">
+    
     <div class="sidebar">
         <h2>Movemate</h2>
+
         <a th:href="@{/}">🏠 Inicio</a>
         <a th:href="@{/actividades}">📅 Actividades</a>
         <a th:href="@{/mis-actividades}">📋 Mi perfil</a>
+
+        <!-- Solo monitores -->
+        <div sec:authorize="hasRole('MONITOR')">
+            <a th:href="@{/actividades/nueva}">➕ Crear Actividad</a>
+        </div>
+
+        <!-- Espaciador para empujar el logout al fondo -->
+        <div class="spacer"></div>
+
+        <!-- Logout -->
         <form th:action="@{/logout}" method="post">
-            <button type="submit">🔓 Logout</button>
+            <button type="submit" class="logout-button">🔓 Logout</button>
         </form>
     </div>
 </div>
