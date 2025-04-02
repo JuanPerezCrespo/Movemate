@@ -34,8 +34,9 @@
                             <p><strong>Dirección:</strong> <span th:text="${usuario.direccion}"></span></p>
                         </li>
                     </ul>
-                    <form action="/usuario/eliminar" method="post"
+                    <form th:action="@{/usuario/eliminar}" method="post"
                         onsubmit="return confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.')">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                         <button type="submit" class="btn btn-danger">Eliminar cuenta</button>
                     </form>
                 </div>

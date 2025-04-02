@@ -20,7 +20,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/login", "/css/**", "/js/**").permitAll()
                 .requestMatchers("/registro", "/css/**", "/js/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/eliminar-cuenta").authenticated()
+                .requestMatchers(HttpMethod.POST, "/usuario/eliminar").authenticated()
                 .requestMatchers("/", "/actividades", "/actividades/{id}").authenticated()
                 .requestMatchers("/actividades/nueva", "/actividades/guardar").hasRole("MONITOR")
                 

@@ -12,4 +12,6 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
     List<Reserva> findByUsuario(Usuario usuario);
     List<Reserva> findByUsuarioAndActividad(Usuario usuario, Actividad actividad);
     boolean existsByUsuarioAndActividad(Usuario usuario, Actividad actividad);
+    void deleteAllByUsuario(Usuario usuario);
+
 }

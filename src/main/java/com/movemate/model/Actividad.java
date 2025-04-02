@@ -47,8 +47,9 @@ public class Actividad {
     @JoinColumn(name = "monitor_id")
     private Monitor monitor;
 
-    @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reserva> reservas;
+
 
     // Getters y Setters
 

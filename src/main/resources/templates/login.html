@@ -118,6 +118,10 @@
 
         <button type="submit">Entrar</button>
     </form>
+    
+    <div th:if="${param.cuentaEliminada}" style="color: green; margin-bottom: 15px;">
+        ✅ Tu cuenta ha sido eliminada correctamente.
+    </div>
 
     <div class="register-link">
         <p>¿No tienes cuenta? <a th:href="@{/registro}">Regístrate aquí</a></p>

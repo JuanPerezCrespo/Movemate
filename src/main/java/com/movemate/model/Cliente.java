@@ -8,7 +8,7 @@ public class Cliente extends Usuario {
 
     private String preferencias;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reserva> reservas;
 
     public String getPreferencias() {
