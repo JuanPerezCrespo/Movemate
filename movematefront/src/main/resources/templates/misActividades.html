@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Actividades</title>
+    <link rel="stylesheet" href="/css/cssMisactividades.css">
+    <link rel="icon" href="/Images/logo.png" type="image/png">
+</head>
+
+<body>
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div id="content">
+        <div id="contenido-cliente">
+            <div class="user-info">
+                <h2>Mis datos personales</h2>
+                <ul>
+                    <li>
+                        <p><strong>Nombre:</strong> <span th:text="${usuario.nombre}"></span></p>
+
+                    </li>
+                    <li>
+                        <p><strong>Email:</strong> <span th:text="${usuario.email}"></span></p>
+
+                    </li>
+                    <li>
+                        <p><strong>Teléfono:</strong> <span th:text="${usuario.telefono}"></span></p>
+                    </li>
+                    <li>
+                        <p><strong>Género:</strong> <span th:text="${usuario.genero}"></span></p>
+                    </li>
+                    <li>
+                        <p><strong>Dirección:</strong> <span th:text="${usuario.direccion}"></span></p>
+                    </li>
+                </ul>
+                <form th:action="@{/usuario/eliminar}" method="post"
+                    onsubmit="return confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.')">
+                    <button type="submit" class="btn">Eliminar cuenta</button>
+                </form>
+            </div>
+            <div class="user-activities" th:if="${usuario.rol == 'cliente'}">
+                <h2 style="text-align: center;">Mis actividades reservadas</h2>
+                <section class="seccion-columnas">
+                    <div th:each="actividad : ${actividades}" class="actividad">
+                        <img th:src="@{${actividad.imagenUrl}}" alt="Imagen de la actividad" class="imagen-actividad"
+                            onerror="this.src='/images/default.jpg'">
+                        <p style="margin-bottom: 0px;"><strong>Deporte:</strong> <span
+                                th:text="${actividad.deporte}"></span></p>
+                        <ul style="margin-bottom: 0px; margin-top: 0px;">
+                            <li>
+                                <p><strong>Fecha:</strong> <span
+                                        th:text="${#temporals.format(actividad.fecha, 'dd/MM/yyyy HH:mm')}"></span>
+                                </p>
+                            </li>
+                            <li>
+                                <p><strong>Ubicación:</strong> <span th:text="${actividad.ubicacion}"></span>
+                                </p>
+                            </li>
+                        </ul>
+                        <a class="btn-cancelada" th:href="@{'/actividad/' + ${actividad.id}}"
+                            th:if="${actividad.estado == 'Cancelada'}">Cancelada</a>
+                        <a class="btn" th:href="@{'/actividad/' + ${actividad.id}}"
+                            th:if="${actividad.estado == 'Disponible'}">Más detalles</a>
+                        <a class="btn-completada" th:href="@{'/actividad/' + ${actividad.id}}"
+                            th:if="${actividad.estado == 'Completa'}">Completa</a>
+                    </div>
+                </section>
+            </div>
+            <div th:if="${usuario.rol == 'monitor'}" class="user-activities">
+                <h2 style="text-align: center;">Mis actividades creadas</h2>
+                <section class="seccion-columnas">
+                    <div th:each="actividad : ${actividades}" class="actividades-monitor">
+                        <img th:src="@{${actividad.imagenUrl}}" alt="Imagen de la actividad" class="imagen-actividad"
+                            onerror="this.src='/images/default.jpg'">
+                        <p style="margin-bottom: 0px;"><strong>Deporte:</strong> <span
+                                th:text="${actividad.deporte}"></span>
+                        </p>
+                        <ul style="margin-bottom: 0px; margin-top: 0px;">
+                            <li>
+                                <p><strong>Fecha:</strong> <span
+                                        th:text="${#temporals.format(actividad.fecha, 'dd/MM/yyyy HH:mm')}"></span>
+                                </p>
+                            </li>
+                            <li>
+                                <p><strong>Ubicación:</strong> <span th:text="${actividad.ubicacion}"></span>
+                                </p>
+                            </li>
+                        </ul>
+                        <a class="btn-cancelada" th:href="@{'/actividad/' + ${actividad.id}}"
+                            th:if="${actividad.estado == 'Cancelada'}">Cancelada</a>
+                        <a class="btn" th:href="@{'/actividad/' + ${actividad.id}}"
+                            th:if="${actividad.estado == 'Disponible'}">Más detalles</a>
+                        <a class="btn-completada" th:href="@{'/actividad/' + ${actividad.id}}"
+                            th:if="${actividad.estado == 'Completa'}">Completa</a>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <a th:href="@{/inicio}" id="boton-volver">⬅ Volver al inicio</a>
+    </div>
+</body>
+
+</html>

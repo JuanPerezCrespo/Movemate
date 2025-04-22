@@ -1,0 +1,16 @@
+<div th:fragment="sidebar">
+    <link rel="stylesheet" href="/css/cssSidebar.css">
+
+    <div class="sidebar">
+        <h2>Movemate</h2>
+
+        <a th:href="@{/inicio}">🏠 Inicio</a>
+        <a th:if="${usuario.rol == 'monitor'}" th:href="@{/actividad/crearActividad}" class="create-activity-button">➕
+            Crear Actividad</a>
+        <a th:href="@{/actividad/actividades}"> 📅 Actividades</a>
+        <a th:href="@{/actividad/misActividades(userId=${usuario.id})}">📋 Mi perfil</a>
+        <!-- Logout -->
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="logout-button">🔓 Logout</button>
+        </form>
+    </div>

@@ -1,0 +1,301 @@
+/* Contenedor principal */
+#contenido-principal {
+    display: flex;
+    flex-direction: row;
+    align-items: center; /* Centrar horizontalmente */
+    gap: 20px; /* Espacio entre columnas */
+    justify-content: center; /* Centrar verticalmente */
+    margin-left: 200px;
+    font-family: Arial, sans-serif;
+}
+.content {
+    background-color: #fff; /* Fondo blanco */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Título principal */
+#actividad-detalle h1 {
+    text-align: center;
+    color: #1e3a8a; /* Azul oscuro */
+    margin-bottom: 20px;
+}
+
+#actividad-detalle {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    width: fit-content;
+}
+
+/* Información de la actividad */
+.actividad-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaciado entre los elementos */
+    padding: 20px;
+    background-color: #f9f9f9; /* Fondo claro */
+    border-radius: 8px; /* Bordes redondeados */
+    border: 1px solid #ccc; /* Borde gris claro */
+    margin-bottom: 20px;
+    align-items: center; /* Centrar contenido dentro */
+    text-align: center; /* Centrar texto */
+}
+
+.actividad-info p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #333; /* Texto oscuro */
+}
+
+/* Participantes inscritos */
+#actividad-detalle ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0;
+    text-align: center; /* Centrar texto */
+}
+
+#actividad-detalle ul li {
+    background-color: #e3f2fd; /* Azul claro */
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    text-align: center; /* Centrar texto */
+}
+
+/* Mensajes de estado */
+#actividad-cliente p {
+    color: red;
+    font-weight: bold;
+    margin: 10px 0;
+    text-align: center; /* Centrar texto */
+}
+
+/* Contenedor de los botones (sin fondo ni borde) */
+#actividad-cliente {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    padding: 0; /* Eliminar padding */
+    background-color: transparent; /* Fondo transparente */
+    border: none; /* Sin borde */
+}
+
+/* Botones de acción para apuntarse y desapuntarse */
+#actividad-cliente button {
+    padding: 10px 20px;
+    background-color: #1e3a8a; /* Azul oscuro */
+    color: white;
+    border: none;
+    border-radius: 4px; /* Bordes redondeados */
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+#actividad-cliente button:hover {
+    background-color: #3b82f6; /* Azul claro */
+    transform: translateY(-2px); /* Efecto de elevación */
+}
+
+#actividad-cliente button:active {
+    background-color: #1e40af; /* Azul más oscuro */
+    transform: translateY(0); /* Volver a la posición original */
+}
+
+/* Botones de acción */
+#botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Espaciado entre botones */
+    margin-top: 20px;
+    justify-content: center; /* Centrar botones */
+}
+
+#botones button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#botones .btn-danger {
+    background-color: #e74c3c; /* Rojo */
+    color: white;
+}
+
+#botones .btn-danger:hover {
+    background-color: #c0392b; /* Rojo oscuro */
+}
+
+#botones .btn-success {
+    background-color: #2ecc71; /* Verde */
+    color: white;
+}
+
+#botones .btn-success:hover {
+    background-color: #27ae60; /* Verde oscuro */
+}
+
+#botones .btn-primary {
+    background-color: #3498db; /* Azul */
+    color: white;
+}
+
+#botones .btn-primary:hover {
+    background-color: #2980b9; /* Azul oscuro */
+}
+
+/* Botón de volver */
+#volver {
+    display: inline-block;
+    text-decoration: none;
+    color: #1e3a8a; /* Azul oscuro */
+    font-weight: bold;
+    transition: color 0.3s ease;
+    text-align: center; /* Centrar texto */
+    margin-bottom: 10px;
+}
+
+#volver:hover {
+    color: #3b82f6; /* Azul claro */
+}
+
+/* Alertas */
+.alert-success {
+    color: red;
+    font-weight: bold;
+    border: 1px solid red;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #ffe6e6; /* Fondo rojo claro */
+    border-radius: 5px;
+    text-align: center; /* Centrar texto */
+}
+
+.alert-danger {
+    color: red;
+    font-weight: bold;
+    border: 1px solid red;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #ffe6e6; /* Fondo rojo claro */
+    border-radius: 5px;
+    text-align: center; /* Centrar texto */
+}
+
+#botones-reservas {
+    display: flex;
+    flex-direction: row;
+    gap: 10px; /* Espaciado entre botones */
+    margin-top: 20px;
+    justify-content: center; /* Centrar botones */
+}
+
+/* Estilo general para los botones */
+button {
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Botón de apuntarse */
+.btn-apuntarse {
+    background-color: #28a745; /* Verde */
+    color: white;
+}
+
+.btn-apuntarse:hover {
+    background-color: #218838; /* Verde más oscuro */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Botón de desapuntarse */
+.btn-desapuntarse {
+    background-color: #dc3545; /* Rojo */
+    color: white;
+}
+
+.btn-desapuntarse:hover {
+    background-color: #c82333; /* Rojo más oscuro */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Botón de cancelar */
+.btn-cancelar {
+    background-color: #3498db; /* Azul */
+    color: white;
+}
+
+.btn-cancelar:hover {
+    background-color: #2980b9; /* Azul más oscuro */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Botón de reabrir */
+.btn-reabrir {
+    background-color: chocolate; /* Color chocolate */
+    color: white;
+}
+
+.btn-reabrir:hover {
+    background-color: #d2691e; /* Chocolate más oscuro */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#monitor-mapa {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrar horizontalmente */
+    justify-content: center; /* Centrar verticalmente */
+    margin: 20px;
+    padding: 20px;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    height: fit-content;
+    justify-content: center;
+    width: 485px; /* Ancho del contenedor */
+    background-color: #f9f9f9;
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    border: 1px solid #ccc;
+
+}
+
+div h2 {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #1e3a8a; /* Azul oscuro */
+}
+
+div ul {
+    padding-left: 10%;
+    margin: 0px;
+}
+
+#map {
+    width: 500px; /* Ancho del mapa */
+    height: 400px; /* Altura del mapa */
+}

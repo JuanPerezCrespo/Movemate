@@ -1,0 +1,208 @@
+/* Estilo general */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    color: black;
+    margin-bottom: 20px;
+}
+
+#contenido {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    margin-left: 215px;
+    margin-right: 15px;
+}
+
+/* Botones de filtro */
+#botones {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.boton {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+.boton:hover {
+    background-color: #1976D2;
+}
+
+/* Caja de filtros */
+.filtros-container {
+    background-color: #fff; /* Fondo blanco */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    padding: 20px; /* Espaciado interno */
+    margin-bottom: 20px; /* Espaciado inferior */
+    max-width: 800px; /* Ancho máximo */
+    margin: 0 auto; /* Centrar horizontalmente */
+    display: flex; /* Flexbox para alinear elementos */
+    flex-direction: row; /* Coloca los elementos en fila */
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en varias filas */
+    gap: 20px; /* Espaciado entre los elementos */
+    justify-content: center; /* Centrar los filtros */
+    align-items: center; /* Centrar los filtros verticalmente */
+}
+
+.filtros-container h2 {
+    text-align: center;
+    color: #1e3a8a; /* Azul oscuro */
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Contenedor de los filtros */
+.filtros-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; /* Espaciado entre los elementos */
+    justify-content: center; /* Centrar los filtros */
+    align-items: center;
+}
+
+/* Botones dentro de la caja */
+.filtros-box .boton {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #1e3a8a; /* Azul oscuro */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.filtros-box .boton:hover {
+    background-color: #3b82f6; /* Azul claro */
+}
+
+/* Contenedor de actividades */
+#actividades {
+    display: grid; /* Cambiar a Grid Layout */
+    grid-template-columns: repeat(3, 1fr); /* Tres columnas de igual ancho */
+    gap: 20px; /* Espaciado entre las tarjetas */
+    justify-items: center; /* Centrar las tarjetas horizontalmente */
+    margin-top: 20px; /* Espaciado superior */
+}
+
+/* Tarjetas de actividades */
+.actividad {
+    background-color: #fff9c4; /* Fondo amarillo */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    padding: 10px; /* Espaciado interno */
+    margin: 10px 10px; /* Espaciado vertical entre filas */
+    display: flex; /* Flexbox para alinear elementos */
+    flex-direction: column; /* Coloca los elementos en columna */
+    width: 80%; /* Ancho completo del contenedor */
+}
+
+.actividad:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.imagen-actividad{
+    object-fit: cover; /* Mantiene la proporción de la imagen */
+    width: 100%; /* Ancho completo del contenedor */
+    height: 220px; /* Altura fija para la imagen */
+}
+
+.card-body {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.card-body p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.card-body .btn {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    width: fit-content;
+    align-self: center;
+}
+
+.card-body .btn:hover {
+    background-color: #388E3C;
+}
+
+/* Etiqueta de cancelada */
+.btn-cancelada {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: red;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    width: fit-content;
+    align-self: center;
+}
+
+.btn-completada {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #3498db;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    width: fit-content;
+    align-self: center;
+}
+
+#map {
+    height: 400px;
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagar Actividad</title>
+    <link rel="stylesheet" href="/css/cssPago.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Pago de actividad</h1>
+
+        <!-- Detalles de la actividad -->
+        <div class="actividad-detalles">
+            <p><strong>Deporte:</strong> <span th:text="${actividad.deporte}">Deporte</span></p>
+            <p><strong>Ubicación:</strong> <span th:text="${actividad.ubicacion}">Ubicación</span></p>
+            <p><strong>Dirección:</strong> <span th:text="${actividad.direccion}">Dirección</span></p>
+            <p><strong>Fecha:</strong> <span th:text="${#temporals.format(actividad.fecha, 'dd/MM/yyyy')}">Fecha</span></p>
+            <p><strong>Hora:</strong> <span th:text="${#temporals.format(actividad.fecha, 'HH:mm')}">Hora</span></p>
+            <p><strong>Precio:</strong> <span th:text="${actividad.precio}">0.00</span> €</p>
+        </div>
+
+        <!-- Formulario de pago -->
+        <form th:action="@{/actividad/pagar}" th:object="${pago}" method="post">
+            <input type="hidden" name="actividadId" th:value="${actividad.id}" />
+            <div class="form-group">
+                <label>Método de pago:</label>
+                <select th:field="*{metodoPago}" required>
+                    <option value="Tarjeta">Tarjeta</option>
+                    <option value="Transferencia bancaria">Transferencia bancaria</option>
+                    <option value="Bizum">Bizum</option>
+                </select>
+            </div>
+            <button type="submit" class="btn">Realizar pago</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,166 @@
+/* Estilo general */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    /* Fondo gris claro */
+    color: #333;
+    /* Color del texto */
+    margin: 0px;
+}
+
+
+#content {
+    margin-left: 200px;
+}
+
+#contenido-cliente {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    margin: 15px;
+}
+
+div h2 {
+    margin-top: 0px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+div ul {
+    padding-left: 10%;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    /* Coloca los elementos en columna */
+    background-color: #e8f5e9;
+    /* Fondo verde claro */
+    border: 1px solid #c8e6c9;
+    /* Borde verde */
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+    width: 30%;
+    font-size: 14px;
+    justify-content: center;
+}
+
+
+#contenido-monitor {
+    background-color: #fffde7;
+    /* Fondo amarillo claro */
+    border: 1px solid #fff9c4;
+    /* Borde amarillo */
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+    margin: 15px;
+}
+
+.user-activities{
+    background-color: #fffde7;
+    /* Fondo amarillo claro */
+    border: 1px solid #fff9c4;
+    /* Borde amarillo */
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+    margin: 0px;
+    width: 100%;
+}
+
+.seccion-columnas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* Tres columnas de igual tamaño */
+}
+
+.actividad,
+.actividades-monitor {
+    background-color: #fbc02d;
+    /* Fondo amarillo */
+    border-radius: 8px;
+    /* Bordes redondeados */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Sombra ligera */
+    padding: 10px;
+    /* Espaciado interno */
+    margin: 10px 10px;
+    /* Espaciado vertical entre filas */
+    display: flex;
+    /* Flexbox para alinear elementos */
+    flex-direction: column;
+    /* Coloca los elementos en columna */
+}
+
+.imagen-actividad {
+    object-fit: fill;
+    /* Mantiene la proporción de la imagen */
+    height: 180px;
+    /* Altura fija para la imagen */
+    width: 100%;
+    /* Ancho completo del contenedor */
+}
+
+.btn {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    width: fit-content;
+    align-self: center;
+}
+
+.btn-cancelada {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: red;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    width: fit-content;
+    align-self: center;
+}
+
+.btn-completada {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #3498db;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    width: fit-content;
+    align-self: center;
+}
+
+#boton-volver {
+    margin: 20px auto; /* Agrega margen superior/inferior y centra horizontalmente */
+    display: block; /* Convierte el enlace en un elemento de bloque */
+    text-align: center; /* Asegura que el contenido esté centrado */
+    padding: 10px;
+    background-color: #1e3a8a;
+    width: fit-content;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}

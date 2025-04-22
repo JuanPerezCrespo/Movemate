@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Usuario</title>
+    <link rel="icon" href="/Images/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="/css/registro.css">
+</head>
+
+<body>
+    <div class="registro-container">
+        <h1>Registro</h1>
+        <form th:action="@{/registroClientes}" th:object="${cliente}" method="post">
+            <label>Nombre:</label>
+            <input type="text" th:field="*{nombre}" placeholder="Introduce tu nombre" required />
+
+            <label>Apellidos:</label>
+            <input type="text" th:field="*{apellidos}" placeholder="Introduce tus apellidos" required />
+
+            <label>Email:</label>
+            <input type="email" th:field="*{email}" placeholder="Introduce tu email" required />
+            <span class="error-message" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+
+            <label>Teléfono:</label>
+            <input type="text" th:field="*{telefono}" placeholder="Introduce tu teléfono" required />
+
+            <label>Género:</label>
+            <select th:field="*{genero}" required>
+                <option value="" selected>Selecciona tu género</option>
+                <option value="Hombre">Hombre</option>
+                <option value="Mujer">Mujer</option>
+                <option value="Otro">Otro</option>
+            </select>
+
+            <label>Dirección:</label>
+            <input type="text" th:field="*{direccion}" placeholder="Introduce tu dirección" required />
+
+            <label>Usuario:</label>
+            <input type="text" th:field="*{username}" placeholder="Introduce tu usuario" required />
+            <div th:if="${#fields.hasErrors('username')}" class="error">
+                <span th:errors="*{username}"></span>
+            </div>
+
+            <label>Contraseña:</label>
+            <input type="password" th:field="*{password}" placeholder="Introduce tu contraseña" required />
+            <span class="error-message" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+
+            <div id="deporte-container">
+                <label>Deporte favorito:</label>
+                <select th:field="*{preferencias}" required>
+                    <option value="" selected>Selecciona tu deporte favorito</option>
+                    <option value="Fútbol">Fútbol</option>
+                    <option value="Baloncesto">Baloncesto</option>
+                    <option value="Tenis">Tenis</option>
+                    <option value="Natación">Natación</option>
+                    <option value="Ciclismo">Ciclismo</option>
+                    <option value="Running">Running</option>
+                </select>
+            </div>
+
+            <button type="submit">Registrarse</button>
+        </form>
+
+        <a class="back-link" th:href="@{/login}">⬅ Volver al login</a>
+    </div>
+</body>
+
+</html>

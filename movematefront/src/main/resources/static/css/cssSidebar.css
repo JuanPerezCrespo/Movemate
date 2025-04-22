@@ -1,0 +1,57 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    max-width: 200px;
+    width: 100%;
+    height: 100%;
+    background-color: #1e3a8a;
+    padding: 15px;
+    box-sizing: border-box;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.sidebar h2 {
+    font-size: 1.8rem;
+    margin-top: 0;
+    margin-bottom: 30px;
+    color: #e0e7ff;
+    align-self: center;
+}
+
+.sidebar a,
+.sidebar form button {
+    padding: 12px;          /* Padding inside the button */
+    background: none;       /* Remove default button styles */
+    border: none;           /* Remove default button styles */
+    border-radius: 5px;
+    color: #e0e7ff;
+    text-decoration: none;   /* Remove underline */
+    font-size: 1rem;
+    transition: background-color 0.2s ease-in-out;
+    margin-bottom: 10px;
+}
+
+.sidebar a:hover,
+.sidebar form button:hover {
+    background-color: #2980b9;
+}
+.spacer {
+    flex-grow: 1;
+}
+
+.logout-button {
+    color: #c0392b;
+    font-weight: bold;
+    position: absolute;
+    bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    left: 0;
+}
