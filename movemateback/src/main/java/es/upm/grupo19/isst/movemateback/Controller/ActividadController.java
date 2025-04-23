@@ -1,6 +1,7 @@
 package es.upm.grupo19.isst.movemateback.Controller;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,10 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 import es.upm.grupo19.isst.movemateback.Config.GeocodingService;
 import es.upm.grupo19.isst.movemateback.Model.Actividad;
 import es.upm.grupo19.isst.movemateback.Model.Cliente;
+import es.upm.grupo19.isst.movemateback.Model.Pago;
 import es.upm.grupo19.isst.movemateback.Model.Reserva;
 import es.upm.grupo19.isst.movemateback.Repository.ActividadRepository;
 import es.upm.grupo19.isst.movemateback.Repository.ClienteRepository;
+import es.upm.grupo19.isst.movemateback.Repository.PagoRepository;
 import es.upm.grupo19.isst.movemateback.Repository.ReservaRepository;
+import jakarta.transaction.Transactional;
 
 @CrossOrigin
 @RestController
@@ -31,12 +35,14 @@ public class ActividadController {
     private final ActividadRepository actividadRepository;
     private final ClienteRepository clienteRepository;
     private final ReservaRepository reservaRepository;
+    private final PagoRepository pagoRepository;
     private final GeocodingService geocodingService;
 
     public static final Logger log = LoggerFactory.getLogger(ActividadController.class);
 
     public ActividadController(ActividadRepository actividadRepository, ClienteRepository clienteRepository,
-            ReservaRepository reservaRepository, GeocodingService geocodingService) {
+            ReservaRepository reservaRepository, GeocodingService geocodingService, PagoRepository pagoRepository) {
+        this.pagoRepository = pagoRepository;
         this.geocodingService = geocodingService;
         this.reservaRepository = reservaRepository;
         this.clienteRepository = clienteRepository;
@@ -165,23 +171,38 @@ public class ActividadController {
         if (!yaReservado) {
             // Crear una nueva reserva
             Reserva reserva = new Reserva();
+            Pago pago = new Pago();
+            pago.setCantidad(0.0); // Inicializar el pago a 0.0
+            pago.setEstado("Pendiente"); // Estado inicial del pago
+            pago.setMetodoPago("No se ha seleccionado un método de pago"); // Método de pago inicial
+
+            // Guardar el pago primero
+            pagoRepository.save(pago);
+
+            // Asignar la reserva al pago y viceversa
+            pago.setReserva(reserva);
             reserva.setCliente(cliente);
             reserva.setActividad(actividad);
-            reserva.setPago(null); // Asignar el pago a null por ahora, se puede implementar más tarde
+            reserva.setPago(pago);
+
+            // Guardar la reserva
             reservaRepository.save(reserva);
+
+            // Actualizar el estado de la actividad si es necesario
             if (reservaRepository.countByActividad(actividad) >= actividad.getMaxParticipantes()) {
                 actividad.setEstado("Completa");
-                actividadRepository.save(actividad);
             } else {
                 actividad.setEstado("Disponible");
-                actividadRepository.save(actividad);
             }
+            actividadRepository.save(actividad);
+
             return ResponseEntity.ok("Te has apuntado correctamente a la actividad.");
         } else {
             return ResponseEntity.badRequest().body("Ya te encuentras apuntado en la actividad.");
         }
     }
 
+    @Transactional
     @PostMapping("/{id}/cancelar/{usuarioId}")
     public ResponseEntity<?> cancelarReserva(@PathVariable Long id, @PathVariable Long usuarioId) {
         Cliente cliente = clienteRepository.findById(usuarioId).orElse(null);
@@ -203,6 +224,12 @@ public class ActividadController {
         Reserva reserva = reservaRepository.findByClienteAndActividad(cliente, actividad);
 
         if (reserva != null) {
+            // Eliminar el pago asociado a la reserva
+            if (reserva.getPago() != null) {
+                reserva.getPago().setReserva(null); // Desvincular el pago de la reserva
+                pagoRepository.save(reserva.getPago()); // Guardar el pago actualizado
+            }
+            pagoRepository.delete(reserva.getPago());
             // Eliminar la reserva
             reservaRepository.delete(reserva);
             // Actualizar el estado de la actividad si es necesario
@@ -221,6 +248,7 @@ public class ActividadController {
     }
 
     // Endpoint para cancelar una actividad por su ID.
+    @Transactional
     @PostMapping("/{id}/cancelarActividad")
     public ResponseEntity<?> cancelarActividad(@PathVariable Long id) {
         Actividad actividad = actividadRepository.findById(id).orElse(null);
@@ -232,6 +260,8 @@ public class ActividadController {
         if (actividad.getFecha().isBefore(LocalDateTime.now())) {
             return ResponseEntity.badRequest().body("No se puede cancelar una actividad que ya ha ocurrido.");
         }
+        // Borramos todas las reservas asociadas a la actividad y sus pagos
+        borrarReservas(id);
         // Cambiar el estado de la actividad a "Cancelada"
         actividad.setEstado("Cancelada");
         actividadRepository.save(actividad);
@@ -286,4 +316,36 @@ public class ActividadController {
         }
     }
 
+    // Este método elimina todos los pagos, reservas de una actividad pero no la
+    // actividad.
+    @Transactional
+    @DeleteMapping("{id}/borrarReservas")
+    public ResponseEntity<?> borrarReservas(@PathVariable Long id) {
+        Actividad actividad = actividadRepository.findById(id).orElse(null);
+
+        if (actividad == null) {
+            return ResponseEntity.badRequest().body("Actividad no encontrada.");
+        }
+
+        // Iterar sobre las reservas asociadas a la actividad
+        List<Reserva> reservas = actividad.getReservas();
+        if (reservas != null && !reservas.isEmpty()) {
+            for (Reserva reserva : reservas) {
+                if (reserva.getPago() != null) {
+                    // Eliminar el pago asociado a la reserva
+                    Pago pago = reserva.getPago();
+                    reserva.setPago(null); // Desvincular el pago de la reserva
+                    reservaRepository.save(reserva); // Guardar la reserva actualizada
+                    pagoRepository.delete(pago); // Eliminar el pago
+                }
+            }
+            // Eliminar todas las reservas asociadas
+            reservaRepository.deleteAll(reservas);
+            return ResponseEntity.ok("Reservas asociadas eliminadas correctamente.");
+
+        } else {
+            return ResponseEntity.ok("No hay reservas asociadas a esta actividad.");
+        }
+
+    }
 }

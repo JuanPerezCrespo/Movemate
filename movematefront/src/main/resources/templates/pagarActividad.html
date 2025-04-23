@@ -23,7 +23,7 @@
         <form th:action="@{/actividad/pagar}" th:object="${pago}" method="post">
             <input type="hidden" name="actividadId" th:value="${actividad.id}" />
             <div class="form-group">
-                <label>Método de pago:</label>
+                <label><strong>Método de pago:</strong></label>
                 <select th:field="*{metodoPago}" required>
                     <option value="Tarjeta">Tarjeta</option>
                     <option value="Transferencia bancaria">Transferencia bancaria</option>

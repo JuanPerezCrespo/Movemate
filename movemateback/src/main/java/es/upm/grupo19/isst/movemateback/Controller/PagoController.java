@@ -2,6 +2,7 @@ package es.upm.grupo19.isst.movemateback.Controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,53 +41,36 @@ public class PagoController {
     }
 
     // Metodo para pagar una reserva de actividad por parte de un cliente.
-    @PostMapping("/{actividadId}/{usuarioId}")
-    public String pagarReserva(@PathVariable Long actividadId, @PathVariable Long usuarioId, @RequestBody Pago pago) {
-        // Obtener la actividad y el usuario por sus IDs.
+    @PostMapping("/{actividadId}/{clienteId}")
+    public ResponseEntity<?> pagarReserva(@PathVariable Long actividadId, @PathVariable Long clienteId,
+            @RequestBody Pago nuevoPago) {
+        // Buscar la actividad
         Actividad actividad = actividadRepository.findById(actividadId).orElse(null);
-        Cliente cliente = clienteRepository.findById(usuarioId).orElse(null);
-
-        // Validar que la actividad y el cliente existan.
-        if (actividad == null || cliente == null) {
-            log.error(
-                    "Actividad o cliente no encontrados. Actividad ID: " + actividadId + ", Cliente ID: " + usuarioId);
-            return "Actividad o cliente no encontrados.";
+        Cliente cliente = clienteRepository.findById(clienteId).orElse(null);
+        if (actividad == null) {
+            return ResponseEntity.badRequest().body("La actividad no existe.");
         }
-
-        // Obtenemos la reserva del usuario y la actividad.
+        if (cliente == null) {
+            return ResponseEntity.badRequest().body("El cliente no existe.");
+        }
+        // Buscar la reserva del cliente para esta actividad
         Reserva reserva = reservaRepository.findByClienteAndActividad(cliente, actividad);
-
-        // Comprobamos que la reserva existe.
-        if (reserva != null) {
-            Pago pagoExistente = reserva.getPago();
-            if (pagoExistente != null) {
-                if ("Completado".equals(pagoExistente.getEstado())) {
-                    log.error("El pago ya ha sido realizado para la reserva: " + reserva.getId());
-                    return "El pago ya ha sido realizado para la reserva.";
-                }
-            }
-
-            if ("Cancelada".equals(reserva.getActividad().getEstado())) {
-                log.error("La actividad ha sido cancelada: " + reserva.getActividad().getId());
-                return "La actividad ha sido cancelada. No se puede realizar el pago.";
-            }
-
-            if (pagoExistente != null) {
-                pagoExistente.setEstado(pago.getEstado());
-                pagoRepository.save(pagoExistente);
-                log.info("Pago actualizado para la reserva: " + reserva.getId());
-                return "Pago actualizado con éxito para la reserva: " + reserva.getId();
-            } else {
-                reserva.setPago(pago);
-                pago.setReserva(reserva);
-                pagoRepository.save(pago);
-                log.info("Nuevo pago creado para la reserva: " + reserva.getId());
-                return "Pago realizado con éxito para la reserva: " + reserva.getId();
-            }
-        } else {
-            log.error("No se encontró la reserva para el usuario: " + usuarioId + " y actividad: " + actividadId);
-            return "No se encontró la reserva para el usuario y la actividad.";
+        if (reserva == null) {
+            return ResponseEntity.badRequest().body("No tienes una reserva en esta actividad.");
         }
+
+        // Verificar si ya existe un pago asociado a la reserva
+        Pago pagoExistente = reserva.getPago();
+        if (pagoExistente.getEstado().equals("Completado")) {
+            return ResponseEntity.badRequest().body("Ya has pagado esta reserva.");
+        } else {
+            // Actualizar el pago existente
+            pagoExistente.setCantidad(actividad.getPrecio()); // Actualizar la cantidad del pago
+            pagoExistente.setEstado("Completado"); // Cambiar el estado a "Completado"
+            pagoExistente.setMetodoPago(nuevoPago.getMetodoPago());
+            pagoRepository.save(pagoExistente);
+        }
+        return ResponseEntity.ok("Pago procesado correctamente.");
     }
 
     // Metodo para eliminar un pago de una reserva de actividad por parte de un

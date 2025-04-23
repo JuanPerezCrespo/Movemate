@@ -42,8 +42,6 @@
                     </div>
                 </div>
                 <div class="actividad-info">
-                    <p><strong>Monitor de la actividad:</strong> <span
-                            th:text="${actividad.monitor.nombre + ' ' + actividad.monitor.apellidos}"></span></p>
                     <p><strong>Tipo de actividad:</strong> <span th:text="${actividad.deporte}"></span></p>
                     <p><strong>Ubicación:</strong> <span th:text="${actividad.ubicacion}"></span></p>
                     <p><strong>Dirección:</strong> <span th:text="${actividad.direccion}"></span></p>
@@ -102,7 +100,7 @@
                             Actividad</button>
                     </form>
                     <!-- Botón para pagar la actividad -->
-                    <form th:if="${usuario.rol == 'cliente' and reservado and !actividadPasada}"
+                    <form th:if="${usuario.rol == 'cliente' and reservado and !actividadPasada and !actividadCancelada}"
                         th:action="@{'/actividad/' + ${actividad.id} + '/pagar'}" method="get">
                         <button type="submit" class="btn btn-apuntarse">💳 Pagar Actividad</button>
                     </form>
