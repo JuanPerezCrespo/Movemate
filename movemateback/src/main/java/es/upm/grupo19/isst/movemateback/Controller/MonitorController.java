@@ -161,7 +161,9 @@ public class MonitorController {
             log.error("Monitor no encontrado con ID: " + monitorId);
             return ResponseEntity.badRequest().body("Monitor no encontrado");
         }
-
+        if (nuevaActividad.getFecha() == null) {
+            throw new IllegalArgumentException("La fecha de la actividad no puede ser nula.");
+        }
         // Validar que el deporte este en la lista de deportes permitidos
         List<String> deportesPermitidos = List.of("Fútbol", "Baloncesto", "Tenis", "Running", "Natación", "Ciclismo");
         if (!deportesPermitidos.contains(nuevaActividad.getDeporte())) {
@@ -171,7 +173,8 @@ public class MonitorController {
         // Si la fecha de la actividad es anterior a la fecha actual, devolver error
         if (nuevaActividad.getFecha().isBefore(java.time.LocalDate.now().atStartOfDay())) {
             log.error("La fecha de la actividad no puede ser anterior a la fecha actual.");
-            return ResponseEntity.badRequest().body("La fecha de la actividad no puede ser anterior a la fecha actual.");
+            return ResponseEntity.badRequest()
+                    .body("La fecha de la actividad no puede ser anterior a la fecha actual.");
         }
 
         // Validar que el precio sea mayor que 0

@@ -130,9 +130,7 @@ public class ActividadController {
     public ResponseEntity<?> eliminarActividad(@PathVariable Long id) {
         Actividad actividad = actividadRepository.findById(id).orElse(null);
         if (actividad != null) {
-            // Eliminar todas las reservas asociadas a la actividad
-            reservaRepository.deleteAll(actividad.getReservas());
-
+            borrarReservas(id);
             // Eliminar la actividad
             actividadRepository.delete(actividad);
             return ResponseEntity.ok("Actividad y sus reservas asociadas eliminadas correctamente.");

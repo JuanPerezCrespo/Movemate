@@ -81,3 +81,14 @@ form input:focus, form textarea:focus, form select:focus {
 #volver:hover {
     color: #3b82f6; /* Azul claro */
 }
+
+.alert-danger {
+    color: red;
+    font-weight: bold;
+    border: 1px solid red;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #ffe6e6; /* Fondo rojo claro */
+    border-radius: 5px;
+    text-align: center; /* Centrar texto */
+}

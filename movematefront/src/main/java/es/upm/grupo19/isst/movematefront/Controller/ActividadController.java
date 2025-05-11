@@ -76,10 +76,12 @@ public class ActividadController {
         try {
             // Enviar el ID del usuario como parámetro en la solicitud al servicio REST
             String url = usuarioServiceURL + "/myapi/monitor/" + usuarioId + "/actividades";
-            restTemplate.postForObject(url, actividad, Actividad.class);
-        } catch (Exception e) {
-            logger.info("Error al guardar la actividad: " + e.getMessage());
-            model.addAttribute("error", "No se pudo guardar la actividad. Inténtalo de nuevo.");
+            restTemplate.postForObject(url, actividad, String.class);
+        } catch (HttpClientErrorException e) {
+            String errorMessage = e.getResponseBodyAsString();
+            logger.info("Error al reservar la actividad: " + errorMessage);
+            model.addAttribute("error", errorMessage);
+            verificaciones(model, actividad.getId());
             return VISTA_CREAR_ACTIVIDAD;
         }
         // Obtenemos la lista de actividades después de crear una actividad
