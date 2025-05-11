@@ -56,6 +56,15 @@ public class ClienteController {
     // Devuelve un URI con la ubicación del nuevo cliente creado.
     @PostMapping
     public ResponseEntity<?> createCliente(@RequestBody Cliente newcliente) throws URISyntaxException {
+        if (newcliente.getTelefono() == null || newcliente.getTelefono().isBlank()) {
+            return ResponseEntity.badRequest().body("El teléfono es obligatorio.");
+        }
+        if (newcliente.getNombre() == null || newcliente.getNombre().isBlank()) {
+            return ResponseEntity.badRequest().body("El nombre es obligatorio.");
+        }
+        if (newcliente.getApellidos() == null || newcliente.getApellidos().isBlank()) {
+            return ResponseEntity.badRequest().body("Los apellidos son obligatorios.");
+        }
         // Comprobamos si el cliente ya existe en la base de datos.
         if (usuarioRepository.findByUsername(newcliente.getUsername()) != null) {
             log.error("El cliente ya existe: " + newcliente.getUsername());
@@ -75,6 +84,35 @@ public class ClienteController {
         if (newcliente.getUsername().length() < 5) {
             log.error("El nombre de usuario es demasiado corto: " + newcliente.getUsername());
             return ResponseEntity.badRequest().body("El nombre de usuario debe tener al menos 5 caracteres.");
+        }
+        // Comprobamos que el email tenga un formato válido.
+        if (!newcliente.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            log.error("El email no es válido: " + newcliente.getEmail());
+            return ResponseEntity.badRequest().body("El email no es válido.");
+        }
+        // Comprobamos que el telefono tenga un formato válido y que no sea nulo ni
+        // vacío.
+        if (!newcliente.getTelefono().matches("^[0-9]{9}$")) {
+            log.error("El teléfono no es válido: " + newcliente.getTelefono());
+            return ResponseEntity.badRequest().body("El teléfono no es válido.");
+        }
+        // Comprobamos que el nombre y apellidos tengan un formato válido (con tildes).
+        if (!newcliente.getNombre().matches("^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$")) {
+            log.error("El nombre no es válido: " + newcliente.getNombre());
+            return ResponseEntity.badRequest().body("El nombre no es válido.");
+        }
+        if (!newcliente.getApellidos().matches("^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$")) {
+            log.error("Los apellidos no son válidos: " + newcliente.getApellidos());
+            return ResponseEntity.badRequest().body("Los apellidos no son válidos.");
+        }
+        // Comprobamos que el nombre de usuario no tenga espacios.
+        if (newcliente.getUsername().contains(" ")) {
+            log.error("El nombre de usuario no puede contener espacios: " + newcliente.getUsername());
+            return ResponseEntity.badRequest().body("El nombre de usuario no puede contener espacios.");
+        }
+        List<String> deportesValidos = List.of("fútbol", "baloncesto", "tenis", "running", "natación", "ciclismo");
+        if (!deportesValidos.contains(newcliente.getPreferencias().toLowerCase())) {
+            return ResponseEntity.badRequest().body("El deporte de preferencia no es válido.");
         }
         // Asignamos la latitud y longitud en función de la dirección.
         if (newcliente.getDireccion() != null && !newcliente.getDireccion().isEmpty()) {
