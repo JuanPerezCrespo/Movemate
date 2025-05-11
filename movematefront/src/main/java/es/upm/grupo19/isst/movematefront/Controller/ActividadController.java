@@ -81,7 +81,6 @@ public class ActividadController {
             String errorMessage = e.getResponseBodyAsString();
             logger.info("Error al reservar la actividad: " + errorMessage);
             model.addAttribute("error", errorMessage);
-            verificaciones(model, actividad.getId());
             return VISTA_CREAR_ACTIVIDAD;
         }
         // Obtenemos la lista de actividades después de crear una actividad

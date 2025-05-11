@@ -37,28 +37,15 @@ public class ClienteController {
     }
 
     @PostMapping("/registroClientes")
-    public String registrarCliente(@Validated Cliente cliente, BindingResult result) {
+    public String registrarCliente(Cliente cliente, BindingResult result, Model model) {
         cliente.setRol("cliente"); // Asignar el rol de cliente por defecto
         logger.info("Registrando nuevo cliente: " + cliente.getNombre() + " " + cliente.getApellidos());
         try {
             restTemplate.postForObject(ClienteManagerURL + "/myapi/cliente", cliente, Cliente.class);
         } catch (HttpClientErrorException e) {
-            logger.info("Error al registrar el cliente: " + e.getMessage());
-            String errorMesage = e.getResponseBodyAsString();
-            if (errorMesage.contains("email")) {
-                result.rejectValue("email", "error.cliente", "El email ya está en uso. Por favor, elige otro.");
-            } else if (errorMesage.contains("El nombre de usuario ya está en uso.")) {
-                result.rejectValue("username", "error.cliente",
-                        "El nombre de usuario ya está en uso. Por favor, elige otro.");
-            } else if (errorMesage.contains("contraseña")) {
-                result.rejectValue("password", "error.cliente",
-                        "La contraseña es demasiado corta. Debe tener al menos 8 caracteres.");
-            } else if (errorMesage.contains("El nombre de usuario debe tener al menos 5 caracteres")) {
-                result.rejectValue("username", "error.cliente",
-                        "El nombre de usuario debe tener al menos 5 caracteres.");
-            } else {
-                result.rejectValue("email", "error.cliente", "Error al registrar el cliente: " + errorMesage);
-            }
+            String errorMessage = e.getResponseBodyAsString();
+            logger.info("Error al reservar la actividad: " + errorMessage);
+            model.addAttribute("error", errorMessage);
             return VISTA_REGISTRO_CLIENTES; // Redirige a la vista de registro si hay errores
         }
         return VISTA_LOGIN; // Redirige a la vista de login después del registro

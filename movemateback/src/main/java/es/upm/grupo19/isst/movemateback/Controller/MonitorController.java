@@ -162,7 +162,7 @@ public class MonitorController {
             return ResponseEntity.badRequest().body("Monitor no encontrado");
         }
         if (nuevaActividad.getFecha() == null) {
-            throw new IllegalArgumentException("La fecha de la actividad no puede ser nula.");
+            return ResponseEntity.badRequest().body("La fecha de la actividad no puede ser nula.");
         }
         // Validar que el deporte este en la lista de deportes permitidos
         List<String> deportesPermitidos = List.of("Fútbol", "Baloncesto", "Tenis", "Running", "Natación", "Ciclismo");

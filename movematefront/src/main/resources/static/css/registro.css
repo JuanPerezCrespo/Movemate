@@ -104,3 +104,14 @@ button:hover {
     margin-bottom: 15px; /* Espaciado inferior */
 }
 
+.alert-danger {
+    color: red;
+    font-weight: bold;
+    border: 1px solid red;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #ffe6e6; /* Fondo rojo claro */
+    border-radius: 5px;
+    text-align: center; /* Centrar texto */
+}
+
